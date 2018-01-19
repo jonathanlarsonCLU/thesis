@@ -1,0 +1,91 @@
+---
+title: "dbtstmetaanalysis"
+author: "Jonathan"
+date: "January 15, 2018"
+output: pdf_document
+---
+
+# Load Packages
+```{r}
+#install.packages("metafor")
+library("metafor")
+
+#install.packages("readxl")
+library("readxl")
+
+```
+
+# Load in Data from Excel
+```{r}
+
+setwd("~/Thesis/Data")
+
+
+dbtstma <- readxl::read_excel("rstudiometaanalysis.xlsx")
+
+
+summary(dbtstma)
+
+```
+
+
+# Calculate effect sizes 
+```{r}
+
+dbtstma <- escalc(n1i = n_control, n2i = n_treatment, m1i = mean_control, m2i = mean_treatment, sd1i = sd_control, sd2i = sd_treatment, data = dbtstma, measure = "SMD", append = TRUE)
+
+
+ma_model <- rma(yi, vi, data = dbtstma)
+summary(ma_model)
+
+# Although need to compute particular outcomes, such as suicide, bpd symptoms, depression, anxiety, here are overall findings for practice: 
+# Summary Effect Size = 0.4288 (Moderate)
+# Summary p-value = <.0001 (significant)
+
+
+
+```
+
+
+
+# Forest-Plot of All Outcomes
+```{r}
+forest(ma_model, slab = paste(dbtstma$study, as.character(dbtstma$year), sep = ", "))
+
+# To visualize all effect sizes
+# Need to figure out how to put them into subgroups of outcomes
+
+
+```
+
+# Boxplot to seperate outcomes across studies 
+```{r}
+boxplot(yi ~ outcome, data = dbtstma)
+
+# To visualize different outcomes
+
+```
+
+
+
+
+# Funnel Plot
+```{r}
+funnel(ma_model)
+
+# A common way to investigate potential publication bias in a meta-analysis is the funnel plot. Asymmetrical distribution indicates potential publication bias.
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+# 

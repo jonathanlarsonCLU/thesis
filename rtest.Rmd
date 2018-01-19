@@ -1,0 +1,31 @@
+---
+title: "practice"
+author: "Jonathan"
+date: "January 17, 2018"
+output: pdf_document
+---
+
+# Load Packages
+```{r}
+install.packages("metafor")
+library("metafor")
+
+install.packages("esc")
+library("esc")
+
+```
+
+# Calculating effect size from one sample t-test
+```{r}
+# 4) Shelton et al., 2011 
+
+
+# BPAQ (t= 7.576, df=21, p=.000)
+
+
+
+
+
+
+```
+

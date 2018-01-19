@@ -1,0 +1,79 @@
+---
+title: "statcheck thesis"
+author: "Jonathan"
+date: "November 8, 2017"
+output: pdf_document
+---
+
+# Download Packages
+```{r}
+
+install.packages("statcheck")
+library("statcheck")
+
+```
+
+# Update Statcheck from GitHub
+```{r}
+
+install.packages("devtools")
+devtools::install_github("MicheleNuijten/statcheck")
+library("statcheck")
+
+```
+
+
+# Statcheck DBT-ST Articles
+```{r}
+# DOWNLOADED XpdfReader 
+checkdir()
+
+# INTERPRETATION: The columns Error and DecisionError show the final results of the consistency check. In this example, Error is TRUE, which means that the reported p-value is inconsistent with the reported test statistic and degrees of freedom. You can also see this in the output, where the reported p-value is "< .05", whereas the computed p-value is .0557. This also means that  DecisionError is also TRUE, which indicates not only that the reported p-value is inconsistent, but it also changes the statistical conclusion: the reported p-value is significant, whereas the recomputed one is not.Note that a result can only be a  DecisionError when it is also an Error.
+
+```
+# RESULTS: Unforuntately, only 2 of the 17 studies revealed data, this is because of the lack of structure and presentation of statistics throughout the articles (use of tables, no df in reported statistic, etc). A solution would be to manually input each statistical test, which is done below. 
+
+
+
+# Statcheck of statistical reporting used in p-curve 
+```{r}
+# Only input p-values that met critiera for p-curve 
+
+study1 <- "z = -2.84, p = .003. z = -1.909, p = .056"
+  
+study2 <- "t(61)=2.292, p=.025. F(61)=5.52, p=.023. F(61)=4.51, p=.039. F(61)=5.27, p=.008. F(61)=3.07, p=.05"
+
+study3<- "t(5) = 3.26, p = .0224. t(5) = -4.00, p = .0103. t(5) = 2.60, p = .0482. t(5) = -1.50, p = .1939"
+
+study4 <- "t(21) = 7.576, p = .000. t(9) = 2.529, p = .032. t(24) = 2.753, p = .011"
+
+study5 <- "t"
+
+#study5 no statistical testing reported
+
+#study6 Bonferroni-adjusted p-values were reported, must learn how to compute them
+
+study7 <- "t(11) = 2.81, p = .02"
+
+#study8 Bonferroni-adjusted p-values were reported, must learn how to compute them
+
+study9 <- "t(24) = 1.86, p = .037. t(24) = 2.57, p < .0084. t(24) = 1.75, p = .046. t(24) = 1.52, p = .707. t(24) = 2.87, p = .004. t(24) = 3.21, p = .001. t(21) = 3.1, p = .002. t(21) = 2.89, p = .004. t(21) = 2.92, p = .004. t(21) = 3,21, p = .002"
+
+study10 <- "F(1,26) = 30.87 , p = .001. F(1,26) = 11.29, p = .002. F(1,26) = 5.94, p = .0220. F(1,25) = 4.83, p = .0374. F(1,26) = 8.96, p = .006. F(1,26) = 8.89, p = .006. F(1,26) = 8.14, p = .008. F(1,25) = 1.99, p = .17. F(1,25) = 0.01, p = .94. F(1,25) = 6.30, p = .0189.          F(1,26) = 2.78, p = .11"
+
+study11 <- "F(1,17) = 4.63 , p = .0461. F(1,17) = 9.50, p = .0068. F(1,17) = 7.16, p = .0160. F(1,17) = 1.88, p = .1882. F(1,17) = 4.16, p = .0572. F(1,17) = 1.14, p = .3006. F(1,17) = 5.58, p = .0304. F(1,17) = 1.99, p = .0144"
+
+study12 <- "F(1,17) = 4.63 , p = .0461. F(1,17) = 9.50, p = .0068. F(1,17) = 7.16, p = .0160. F(1,17) = 1.88, p = .1882. F(1,17) = 4.16, p = .0572. F(1,17) = 1.14, p = .3006. F(1,17) = 5.58, p = .0304. F(1,17) = 1.99, p = .0144"
+
+study13 <- "F (1,17) = 7.88; p = .01. F(1, 17) = 2.41; p = .14"
+
+stat <- statcheck(c(study1,study2,study3,study4,study7,study9, study10, study11))
+
+summary(stat)
+```
+# Results: Of the 6 reviewed studies, study9: Long et al., (2011) was the only one with statistical errors of reporting. This however may be due the fact all of the p-values were reported with p < .05 or p < .01. Therefore, given that only 1 error was found in the remaining 5 reviewed studies, preliminary evidence suggests that there were no signficant errors in reporting. Review this article for further explanation: http://daniellakens.blogspot.com/2015/10/checking-your-stats-and-some-errors-we.html
+
+
+
+
+

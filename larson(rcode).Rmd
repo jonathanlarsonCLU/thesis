@@ -18,8 +18,6 @@ library("readxl")
 # Load in Data from Excel
 ```{r}
 
-setwd("~/Thesis/Data")
-
 
 dbtstma <- readxl::read_excel("rstudiometaanalysis.xlsx")
 

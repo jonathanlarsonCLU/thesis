@@ -1,0 +1,111 @@
+---
+title: "dbtstmetaanalysis12mo"
+author: "Jonathan"
+date: "January 15, 2018"
+output: pdf_document
+---
+
+# Load Packages
+```{r}
+install.packages("metafor")
+library("metafor")
+
+install.packages("esc")
+library("esc")
+
+
+install.packages("effsize")
+library("effsize")
+
+
+```
+
+
+# Manually Calculate Effect Sizes 
+```{r}
+### Shelton et al (2009)
+
+# BPRS - psychopathology
+e1 <- esc_f(f = 5.27 , totaln = 124, grp1n = 63, grp2n = 61, es.type = c("d", "g", "or", "logit", "r", "f", "eta", "cox.or", "cox.log"), study = "Study 2")
+
+# PANAS - positive mood
+e2 <- esc_f(f = 3.07 , totaln = 124, grp1n = 63, grp2n = 61, es.type = c("d", "g", "or", "logit", "r", "f", "eta", "cox.or", "cox.log"), study = "Study 2")
+
+
+
+
+#mes(m.1, m.2, sd.1, sd.2, n.1, n.2,level = 95, cer = 0.2, dig = 2, verbose = TRUE, id=NULL, data=NULL)
+
+# EDE-WC - weight concerns
+e3 <- mes(2.2, 2.9, 1.1, 1.4, 41, 60,level = 95, cer = 0.2, dig = 2, verbose = TRUE, id=NULL, data=NULL)
+
+# EDE-SC - shape concerns
+e4 <- mes(2.2, 3.1, 1.3, 1.3, 41, 60,level = 95, cer = 0.2, dig = 2, verbose = TRUE, id=NULL, data=NULL)
+
+mes(e3, e4)
+
+ma_model <- rma(yi, vi, data = catdog)
+summary(ma_model)
+
+MAmodel <- combine_esc(e1, e2, e3)
+
+
+
+```
+
+# Calculate Effect Sizes
+```{r}
+e1 <- esc_f(f = 5.27 , totaln = 124, grp1n = 63, grp2n = 61, es.type = c("d", "g", "or", "logit", "r", "f", "eta", "cox.or", "cox.log"), study = "Study 2")
+e2 <- esc_f(f = 3.07 , totaln = 124, grp1n = 63, grp2n = 61, es.type = c("d", "g", "or", "logit", "r", "f", "eta", "cox.or", "cox.log"), study = "Study 2")
+e3 <- esc_t(p = 0.03, grp1n = 100, grp2n = 150, study = "Study 3")
+e4 <- esc_mean_sd(grp1m = 7, grp1sd = 2, grp1n = 50, grp2m = 9, grp2sd = 3,
+                  grp2n = 60, es.type = "logit", study = "Study 4")
+ 
+mydat <- combine_esc(e1, e2, e3, e4)
+
+mydat
+
+metafor::rma(yi = es, sei = se, method = "REML", data = mydat)
+
+```
+
+
+
+# Forest-Plot of All Outcomes
+```{r}
+forest(mydat, sep = ", ")
+
+# To visualize all effect sizes
+# Need to figure out how to put them into subgroups of outcomes
+
+
+```
+
+# Boxplot to seperate outcomes across studies 
+```{r}
+boxplot(yi ~ es, data = dbtstma12)
+
+# To visualize different outcomes
+
+```
+
+# Funnel Plot
+```{r}
+funnel(mydat)
+
+# A common way to investigate potential publication bias in a meta-analysis is the funnel plot. Asymmetrical distribution indicates potential publication bias.
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+# 

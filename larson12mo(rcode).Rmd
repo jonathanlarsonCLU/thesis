@@ -13,94 +13,51 @@ library("metafor")
 install.packages("esc")
 library("esc")
 
-
 install.packages("effsize")
 library("effsize")
 
-
 ```
 
 
-# Manually Calculate Effect Sizes 
+# Calculate Effect Sizes for Depression 
 ```{r}
-### Shelton et al (2009)
+# Safer et al. (2010) - beck depression inventory
+e1 <- esc_mean_sd(grp1m = 10.36, grp1sd = 9.97, grp1n = 50, grp2m = 10.04, grp2sd = 7.84,
+                  grp2n = 51, es.type = "logit", study = "safer et al")
 
-# BPRS - psychopathology
-e1 <- esc_f(f = 5.27 , totaln = 124, grp1n = 63, grp2n = 61, es.type = c("d", "g", "or", "logit", "r", "f", "eta", "cox.or", "cox.log"), study = "Study 2")
+# Safer et al. (2010) - ees depression 
+e2 <- esc_mean_sd(grp1m = 2.12, grp1sd = 0.92, grp1n = 50, grp2m = 2.18, grp2sd = 0.89,
+                  grp2n = 51, es.type = "logit", study = "safer et al") 
 
-# PANAS - positive mood
-e2 <- esc_f(f = 3.07 , totaln = 124, grp1n = 63, grp2n = 61, es.type = c("d", "g", "or", "logit", "r", "f", "eta", "cox.or", "cox.log"), study = "Study 2")
-
-
-
-
-#mes(m.1, m.2, sd.1, sd.2, n.1, n.2,level = 95, cer = 0.2, dig = 2, verbose = TRUE, id=NULL, data=NULL)
-
-# EDE-WC - weight concerns
-e3 <- mes(2.2, 2.9, 1.1, 1.4, 41, 60,level = 95, cer = 0.2, dig = 2, verbose = TRUE, id=NULL, data=NULL)
-
-# EDE-SC - shape concerns
-e4 <- mes(2.2, 3.1, 1.3, 1.3, 41, 60,level = 95, cer = 0.2, dig = 2, verbose = TRUE, id=NULL, data=NULL)
-
-mes(e3, e4)
-
-ma_model <- rma(yi, vi, data = catdog)
-summary(ma_model)
-
-MAmodel <- combine_esc(e1, e2, e3)
+# Safer & Joyce (2011) - beck depression inventory
+e3 <- esc_mean_sd(grp1m = 8, grp1sd = 8.6, grp1n = 41, grp2m = 13.1, grp2sd = 9.3,
+                  grp2n = 60, es.type = "logit", study = "safer and joyce") 
 
 
+depression12mo <- combine_esc(e1, e2, e3)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = depression12mo)
 
 ```
 
-# Calculate Effect Sizes
+# Calculate Effect Sizes for Eating Behaviors 
 ```{r}
-e1 <- esc_f(f = 5.27 , totaln = 124, grp1n = 63, grp2n = 61, es.type = c("d", "g", "or", "logit", "r", "f", "eta", "cox.or", "cox.log"), study = "Study 2")
-e2 <- esc_f(f = 3.07 , totaln = 124, grp1n = 63, grp2n = 61, es.type = c("d", "g", "or", "logit", "r", "f", "eta", "cox.or", "cox.log"), study = "Study 2")
-e3 <- esc_t(p = 0.03, grp1n = 100, grp2n = 150, study = "Study 3")
-e4 <- esc_mean_sd(grp1m = 7, grp1sd = 2, grp1n = 50, grp2m = 9, grp2sd = 3,
-                  grp2n = 60, es.type = "logit", study = "Study 4")
- 
-mydat <- combine_esc(e1, e2, e3, e4)
+# Safer et al. (2010) - beck depression inventory
+e1 <- esc_mean_sd(grp1m = 10.36, grp1sd = 9.97, grp1n = 50, grp2m = 10.04, grp2sd = 7.84,
+                  grp2n = 51, es.type = "logit", study = "safer et al")
 
-mydat
+# Safer et al. (2010) - ees depression 
+e2 <- esc_mean_sd(grp1m = 2.12, grp1sd = 0.92, grp1n = 50, grp2m = 2.18, grp2sd = 0.89,
+                  grp2n = 51, es.type = "logit", study = "safer et al") 
 
-metafor::rma(yi = es, sei = se, method = "REML", data = mydat)
-
-```
+# Safer & Joyce (2011) - beck depression inventory
+e3 <- esc_mean_sd(grp1m = 8, grp1sd = 8.6, grp1n = 41, grp2m = 13.1, grp2sd = 9.3,
+                  grp2n = 60, es.type = "logit", study = "safer and joyce") 
 
 
+depression12mo <- combine_esc(e1, e2, e3)
 
-# Forest-Plot of All Outcomes
-```{r}
-forest(mydat, sep = ", ")
-
-# To visualize all effect sizes
-# Need to figure out how to put them into subgroups of outcomes
-
-
-```
-
-# Boxplot to seperate outcomes across studies 
-```{r}
-boxplot(yi ~ es, data = dbtstma12)
-
-# To visualize different outcomes
-
-```
-
-# Funnel Plot
-```{r}
-funnel(mydat)
-
-# A common way to investigate potential publication bias in a meta-analysis is the funnel plot. Asymmetrical distribution indicates potential publication bias.
-
-```
-
-
-
-
-
+metafor::rma(yi = es, sei = se, method = "REML", data = depression12mo)
 
 
 

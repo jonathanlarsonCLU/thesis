@@ -1,5 +1,5 @@
 ---
-title: "dbtstmetaanalysis12mo"
+title: "standarddbtmetaanalysis12mo"
 author: "Jonathan"
 date: "January 15, 2018"
 output: pdf_document
@@ -16,53 +16,64 @@ library("esc")
 install.packages("effsize")
 library("effsize")
 
+install.packages("compute.es")
+library("compute.es")
 ```
 
 
-# Calculate Effect Sizes for Depression 
+# Preliminary Calculated Effect Sizes of Suicidality  
 ```{r}
-# Safer et al. (2010) - beck depression inventory
-e1 <- esc_mean_sd(grp1m = 10.36, grp1sd = 9.97, grp1n = 50, grp2m = 10.04, grp2sd = 7.84,
-                  grp2n = 51, es.type = "logit", study = "safer et al")
+# Linehan et al. (1933) - parasuicide episodes
+suic1 <- esc_mean_sd(grp1m = 0.72, grp1sd = 1.56, grp1n = 20, grp2m = 1.06, grp2sd = 1.55,
+                  grp2n = 21, es.type = "d", study = "Linehan et al 1933")
 
-# Safer et al. (2010) - ees depression 
-e2 <- esc_mean_sd(grp1m = 2.12, grp1sd = 0.92, grp1n = 50, grp2m = 2.18, grp2sd = 0.89,
-                  grp2n = 51, es.type = "logit", study = "safer et al") 
-
-# Safer & Joyce (2011) - beck depression inventory
-e3 <- esc_mean_sd(grp1m = 8, grp1sd = 8.6, grp1n = 41, grp2m = 13.1, grp2sd = 9.3,
-                  grp2n = 60, es.type = "logit", study = "safer and joyce") 
+# Linehan et al. (2006) - suicide ideation
+suic2 <- esc_mean_sd(grp1m = 24.1, grp1sd = 19.8, grp1n = 46, grp2m = 31.92, grp2sd = 26.8,
+                  grp2n = 35, es.type = "d", study = "Linehan et al 2006")
 
 
-depression12mo <- combine_esc(e1, e2, e3)
 
-metafor::rma(yi = es, sei = se, method = "REML", data = depression12mo)
+suic12mo <- combine_esc(suic1, suic2)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = suic12mo)
+
+#  d = -0.2978 (small) 
 
 ```
 
-# Calculate Effect Sizes for Eating Behaviors 
+
+# Preliminary Calculated Effect Sizes of Hospitalization (psychiatric or suicidal) 
 ```{r}
-# Safer et al. (2010) - beck depression inventory
-e1 <- esc_mean_sd(grp1m = 10.36, grp1sd = 9.97, grp1n = 50, grp2m = 10.04, grp2sd = 7.84,
-                  grp2n = 51, es.type = "logit", study = "safer et al")
+# Linehan et al. (1933) - medically treated episodes
+hos1 <- esc_mean_sd(grp1m = 0.11, grp1sd = 0.11, grp1n = 20, grp2m = 0.56, grp2sd = 0.24,
+                  grp2n = 21, es.type = "d", study = "Linehan et al 1933")
 
-# Safer et al. (2010) - ees depression 
-e2 <- esc_mean_sd(grp1m = 2.12, grp1sd = 0.92, grp1n = 50, grp2m = 2.18, grp2sd = 0.89,
-                  grp2n = 51, es.type = "logit", study = "safer et al") 
+# Linehan et al. (1933) - psychiatric hospital days
+hos2 <- esc_mean_sd(grp1m = 0, grp1sd = 0, grp1n = 20, grp2m = 5.3, grp2sd = 12.87,
+                  grp2n = 21, es.type = "d", study = "Linehan et al 1933")
 
-# Safer & Joyce (2011) - beck depression inventory
-e3 <- esc_mean_sd(grp1m = 8, grp1sd = 8.6, grp1n = 41, grp2m = 13.1, grp2sd = 9.3,
-                  grp2n = 60, es.type = "logit", study = "safer and joyce") 
+# Linehan et al. (2006) - emergency department visits for psychiatric ideation
+hos3 <- esc_f(f = 2.9, totaln = 81, grp1n = 46, grp2n = 35, es.type = "d", study = "Linehan et al 2006")
 
+# Linehan et al. (2006) - emergency department visits for suicide ideation
+hos4 <- esc_f(f = 4.3, totaln = 81, grp1n = 46, grp2n = 35, es.type = "d", study = "Linehan et al 2006")
 
-depression12mo <- combine_esc(e1, e2, e3)
+# Linehan et al. (2006) - hospitalization for psychiatric ideation
+hos5 <- esc_f(f = 6, totaln = 81, grp1n = 46, grp2n = 35, es.type = "d", study = "Linehan et al 2006")
 
-metafor::rma(yi = es, sei = se, method = "REML", data = depression12mo)
-
-
-
-
-
+# Linehan et al. (2006) - hospitalization for psychiatric ideation
+hos6 <- esc_f(f = 7.3, totaln = 81, grp1n = 46, grp2n = 35, es.type = "d", study = "Linehan et al 2006")
 
 
-# 
+hos12mo <- combine_esc(hos1, hos2, hos3, hos4, hos5, hos6)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = hos12mo)
+
+#  d =  -0.1282 (small) 
+
+```
+
+
+
+
+

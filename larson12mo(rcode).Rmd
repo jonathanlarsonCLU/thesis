@@ -1,5 +1,5 @@
 ---
-title: "standarddbtmetaanalysis12mo"
+title: "dbtstmetaanalysis12mo"
 author: "Jonathan"
 date: "January 15, 2018"
 output: pdf_document
@@ -21,55 +21,85 @@ library("compute.es")
 ```
 
 
-# Preliminary Calculated Effect Sizes of Suicidality  
+# Preliminary Calculated Effect Sizes of Eating 
 ```{r}
-# Linehan et al. (1933) - parasuicide episodes
-suic1 <- esc_mean_sd(grp1m = 0.72, grp1sd = 1.56, grp1n = 20, grp2m = 1.06, grp2sd = 1.55,
-                  grp2n = 21, es.type = "d", study = "Linehan et al 1933")
+# Safer & Joyce (2011) - ede-r dietary restraint
+e1 <- esc_mean_sd(grp1m = 1.2, grp1sd = 1.1, grp1n = 41, grp2m = 1.7, grp2sd = 1.4,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
 
-# Linehan et al. (2006) - suicide ideation
-suic2 <- esc_mean_sd(grp1m = 24.1, grp1sd = 19.8, grp1n = 46, grp2m = 31.92, grp2sd = 26.8,
-                  grp2n = 35, es.type = "d", study = "Linehan et al 2006")
+# Safer & Joyce (2011) - ede-wc weight concern
+e2 <- esc_mean_sd(grp1m = 2.2, grp1sd = 1.1, grp1n = 41, grp2m = 2.9, grp2sd = 1.4,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011) - ede-sc shape concern
+e3 <- esc_mean_sd(grp1m = 2.2, grp1sd = 1.3, grp1n = 41, grp2m = 3.1, grp2sd = 1.3,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011) - ede-ec eating concern
+e4 <- esc_mean_sd(grp1m = 0.6, grp1sd = 1.3, grp1n = 41, grp2m = 1.3, grp2sd = 1.4,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011) - tfeq-cr cogntive restraint
+e5 <- esc_mean_sd(grp1m = 9.5, grp1sd = 4.3, grp1n = 41, grp2m = 9.6, grp2sd = 4.7,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011) - tfeq-dis disinhibition
+e6 <- esc_mean_sd(grp1m = 10.4, grp1sd = 3.5, grp1n = 41, grp2m = 12.6, grp2sd = 2.9,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011) - tfeq-h hunger
+e7 <- esc_mean_sd(grp1m = 6.9, grp1sd = 4.1, grp1n = 41, grp2m = 9, grp2sd = 4,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer et al. (2010) - ede restraint
+e8 <- esc_mean_sd(grp1m = 1.10, grp1sd = 1.09, grp1n = 49, grp2m = 1.85, grp2sd = 1.42,
+                  grp2n = 39, es.type = "d", study = "Safer et al 2010")
+
+# Safer et al. (2010) - ede weight concerns
+e9 <- esc_mean_sd(grp1m = 2.27, grp1sd = 1.24, grp1n = 49, grp2m =2.78, grp2sd = 1.31,
+                  grp2n = 39, es.type = "d", study = "Safer et al 2010")
+
+# Safer et al. (2010) - ede shape concerns
+e10 <- esc_mean_sd(grp1m = 2.50, grp1sd = 1.39, grp1n = 49, grp2m = 2.66, grp2sd = 1.30,
+                  grp2n = 39, es.type = "d", study = "Safer et al 2010")
+
+# Safer et al. (2010) - ede eating concerns
+e11 <- esc_mean_sd(grp1m = 0.88, grp1sd = 1.38, grp1n = 49, grp2m = 0.66, grp2sd = 0.95,
+                  grp2n = 39, es.type = "d", study = "Safer et al 2010")
+
+# Safer et al. (2010) - ede restraint
+e12 <- esc_mean_sd(grp1m = 1.10, grp1sd = 1.09, grp1n = 49, grp2m = 1.85, grp2sd = 1.42,
+                  grp2n = 39, es.type = "d", study = "Safer et al 2010")
 
 
 
-suic12mo <- combine_esc(suic1, suic2)
+eat12mo <- combine_esc(e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12)
 
-metafor::rma(yi = es, sei = se, method = "REML", data = suic12mo)
+metafor::rma(yi = es, sei = se, method = "REML", data = eat12mo)
 
-#  d = -0.2978 (small) 
+#  d = -0.4100 (moderate) 
 
 ```
 
 
-# Preliminary Calculated Effect Sizes of Hospitalization (psychiatric or suicidal) 
+# Preliminary Calculated Effect Sizes of Depression
 ```{r}
-# Linehan et al. (1933) - medically treated episodes
-hos1 <- esc_mean_sd(grp1m = 0.11, grp1sd = 0.11, grp1n = 20, grp2m = 0.56, grp2sd = 0.24,
-                  grp2n = 21, es.type = "d", study = "Linehan et al 1933")
 
-# Linehan et al. (1933) - psychiatric hospital days
-hos2 <- esc_mean_sd(grp1m = 0, grp1sd = 0, grp1n = 20, grp2m = 5.3, grp2sd = 12.87,
-                  grp2n = 21, es.type = "d", study = "Linehan et al 1933")
-
-# Linehan et al. (2006) - emergency department visits for psychiatric ideation
-hos3 <- esc_f(f = 2.9, totaln = 81, grp1n = 46, grp2n = 35, es.type = "d", study = "Linehan et al 2006")
-
-# Linehan et al. (2006) - emergency department visits for suicide ideation
-hos4 <- esc_f(f = 4.3, totaln = 81, grp1n = 46, grp2n = 35, es.type = "d", study = "Linehan et al 2006")
-
-# Linehan et al. (2006) - hospitalization for psychiatric ideation
-hos5 <- esc_f(f = 6, totaln = 81, grp1n = 46, grp2n = 35, es.type = "d", study = "Linehan et al 2006")
-
-# Linehan et al. (2006) - hospitalization for psychiatric ideation
-hos6 <- esc_f(f = 7.3, totaln = 81, grp1n = 46, grp2n = 35, es.type = "d", study = "Linehan et al 2006")
+# Safer & Joyce (2011) - DBI depression
+d1 <- esc_mean_sd(grp1m = 8.0, grp1sd = 8.6, grp1n = 41, grp2m = 13.1, grp2sd = 9.3,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
 
 
-hos12mo <- combine_esc(hos1, hos2, hos3, hos4, hos5, hos6)
+# Safer et al. (2010) - ees depression
+d2 <- esc_mean_sd(grp1m = 2.12, grp1sd = 0.92, grp1n = 49, grp2m = 2.18, grp2sd = 0.80,
+                  grp2n = 39, es.type = "d", study = "Safer et al 2010")
 
-metafor::rma(yi = es, sei = se, method = "REML", data = hos12mo)
 
-#  d =  -0.1282 (small) 
+dep12mo <- combine_esc(d1, d2)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = dep12mo)
+
+#  d =  -0.3206  (small) 
 
 ```
 

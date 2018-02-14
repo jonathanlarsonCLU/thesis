@@ -3,6 +3,8 @@ title: "dbtstmetaanalysis"
 author: "Jonathan"
 date: "January 15, 2018"
 output: pdf_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Load Packages
@@ -10,68 +12,278 @@ output: pdf_document
 #install.packages("metafor")
 library("metafor")
 
-#install.packages("readxl")
-library("readxl")
+#install.packages("esc")
+library("esc")
+
+#install.packages("effsize")
+library("effsize")
+
+#install.packages("compute.es")
+library("compute.es")
+
+#install.packages("ggplot2")
+library("ggplot2")
 
 ```
 
-# Load in Data from Excel
+##### Two group Pre and Post #################
+
+# Effect Size of Anxiety 
+```{r}
+
+# Safer et al. (2009): HRSA - anxiety
+a1 <- esc_mean_sd(grp1m = 13, grp1sd = 5.46, grp1n = 42, grp2m = 16.56, grp2sd = 5,
+                  grp2n = 37, es.type = "d", study = "Safer et al 2009")
+
+# Safer et al. (2010): EES-anxiety - anxiety 
+a2 <- esc_mean_sd(grp1m = 1.51, grp1sd = 0.87, grp1n = 50, grp2m = 1.81, grp2sd = 0.89,
+                  grp2n = 51, es.type = "d", study = "Safer et al 2010")
+
+# Soler et al. (2009): HRSA - anxiety 
+# Assumed N1, N2
+a3 <- esc_mean_sd(grp1m = 13, grp1sd = 5.46, grp1n = 23, grp2m = 16.56, grp2sd = 5,
+                  grp2n = 26, es.type = "d", study = "Soler et al. 2009")
+
+
+
+
+anxiety <- combine_esc(a1, a2, a3)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = anxiety)
+
+#  d =  -0.5264 (moderate) 
+
+
+```
+# Effect size of Depression
+```{r}
+# Soler et al. (2009):  HRSD-17 - depression
+# Assumed N1, N2
+d1 <- esc_mean_sd(grp1m = 11.11, grp1sd = 3.99, grp1n = 23, grp2m = 16, grp2sd = 5.78,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+depression <- combine_esc(d1)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = depression)
+
+#  d = -0.9737 (large) 
+
+
+```
+
+# Effect size of Psychiatric Symptoms
+```{r}
+# Soler et al. (2009):  SCL90-R - gsi
+# Assumed N1, N2
+psychiatric1 <- esc_mean_sd(grp1m = 2.09, grp1sd = 1.07, grp1n = 23, grp2m = 2.50, grp2sd = 0.86,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Soler et al. (2009):  SCL90-R - interpersonal sensitivity
+# Assumed N1, N2
+psychiatric2 <- esc_mean_sd(grp1m = 18.50, grp1sd = 10.05, grp1n = 23, grp2m = 26.00, grp2sd =                      8.34, grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Soler et al. (2009):  SCL90-R - hostility
+# Assumed N1, N2
+psychiatric3 <- esc_mean_sd(grp1m = 13.00, grp1sd = 8.59, grp1n = 23, grp2m = 15.85, grp2sd =                       8.17, grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Soler et al. (2009):  SCL90-R - psychoticism
+# Assumed N1, N2
+psychiatric4 <- esc_mean_sd(grp1m = 16.37, grp1sd = 11.09, grp1n = 23, grp2m = 22.28, grp2sd =                      9.19, grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+
+psychiatric <- combine_esc(psychiatric1, psychiatric2, psychiatric3, psychiatric4)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = psychiatric)
+
+#  d =-0.5371 (moderate) 
+
+```
+
+# Effect size of Psychotic Symptoms
+```{r}
+# Soler et al. (2009): BPRS - psychotic symptoms
+# Assumed N1, N2
+psychotic1 <- esc_mean_sd(grp1m = 8.74, grp1sd = 5.06, grp1n = 23, grp2m = 11.89, grp2sd = 4.40,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+psychotic <- combine_esc(psychotic1)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = psychotic)
+
+#  d = -0.6673 (moderate) 
+
+
+```
+
+# Effect size of Suicidiality  
 ```{r}
 
 
-dbtstma <- readxl::read_excel("rstudiometaanalysis.xlsx")
 
-
-summary(dbtstma)
 
 ```
 
+# Effect size of Borderline Personality Disorder Core Symptoms
+```{r}
+# Soler et al. (2009):  CGI-BPD - global
+# Assumed N1, N2
+bpd1 <- esc_mean_sd(grp1m = 3.50, grp1sd = 1.20, grp1n = 23, grp2m = 4.44, grp2sd = 0.52,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
 
-# Calculate effect sizes 
+# Soler et al. (2009):  CGI-BPD - unstable relations
+# Assumed N1, N2
+bpd2 <- esc_mean_sd(grp1m = 4.22, grp1sd = 0.80, grp1n = 23, grp2m = 4.44, grp2sd = 0.72,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Soler et al. (2009):  CGI-BPD - impulsivity
+# Assumed N1, N2
+bpd3 <- esc_mean_sd(grp1m = 3.61, grp1sd = 0.97, grp1n = 23, grp2m = 4.11, grp2sd = 0.60,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Soler et al. (2009):  CGI-BPD - suicide
+# Assumed N1, N2
+bpd4 <- esc_mean_sd(grp1m = 2.44, grp1sd = 1.24, grp1n = 23, grp2m = 2.55, grp2sd = 0.88,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Soler et al. (2009):  CGI-BPD - affect instability
+# Assumed N1, N2
+bpd5 <- esc_mean_sd(grp1m = 3.61, grp1sd = 1.19, grp1n = 23, grp2m = 4.66, grp2sd = 0.70,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+
+# Soler et al. (2009):  CGI-BPD - anger
+# Assumed N1, N2
+bpd6 <- esc_mean_sd(grp1m = 3.11, grp1sd = 1.02, grp1n = 23, grp2m = 3.88, grp2sd = 0.78,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Soler et al. (2009):  CGI-BPD - emptiness
+# Assumed N1, N2
+bpd7 <- esc_mean_sd(grp1m = 4.33, grp1sd = 1.57, grp1n = 23, grp2m = 5, grp2sd = 1.50,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+bpd <- combine_esc(bpd1, bpd2, bpd3, bpd4, bpd5, bpd6, bpd7)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = bpd)
+
+#  d =  -0.6244 (moderate) 
+
+
+```
+
+# Effect size of Hostility (Irritability)
+```{r}
+# Soler et al. (2009):  BDI - irritability
+# Assumed N1, N2
+h1 <- esc_mean_sd(grp1m = 8.38, grp1sd = 3.34, grp1n = 23, grp2m = 9.86, grp2sd = 0.90,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Soler et al. (2009):  BDI - indirect hostility
+# Assumed N1, N2
+h2 <- esc_mean_sd(grp1m = 6.75, grp1sd = 1.88, grp1n = 23, grp2m = 7.57, grp2sd = 1.27,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+hostility <- combine_esc(h1, h2)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = hostility)
+
+#  d =  -0.5695 (moderate) 
+
+
+```
+
+# Effect size of Coping
 ```{r}
 
-dbtstma <- escalc(n1i = n_control, n2i = n_treatment, m1i = mean_control, m2i = mean_treatment, sd1i = sd_control, sd2i = sd_treatment, data = dbtstma, measure = "SMD", append = TRUE)
+# Shelton et al. (2009): WCCL - planful problem solving 
+c1 <- esc_f(f = 5.2, grp1n = 63, grp2n = 61, study = "Shelton et al 2010")
+
+# Shelton et al. (2009): WCCL - escape-avoidance
+c2 <- esc_f(f = 4.51, grp1n = 63, grp2n = 61, study = "Shelton et al 2010")
 
 
-ma_model <- rma(yi, vi, data = dbtstma)
-summary(ma_model)
 
-# Although need to compute particular outcomes, such as suicide, bpd symptoms, depression, anxiety, here are overall findings for practice: 
-# Summary Effect Size = 0.4288 (Moderate)
-# Summary p-value = <.0001 (significant)
+coping <- combine_esc(c1, c2)
 
+metafor::rma(yi = es, sei = se, method = "REML", data = coping)
+
+#  d = 0.3955 (moderate) 
 
 
 ```
 
 
 
-# Forest-Plot of All Outcomes
+# Effect size of Disciplinary Tickets
 ```{r}
-forest(ma_model, slab = paste(dbtstma$study, as.character(dbtstma$year), sep = ", "))
+# Shelton et al. (2009): disciplinary tickets
+dt1 <- esc_t(t = 2.292, grp1n = 63, grp2n = 61, study = "Shelton et al 2010")
 
-# To visualize all effect sizes
-# Need to figure out how to put them into subgroups of outcomes
+disctickets <- combine_esc(dt1)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = disctickets)
+
+#  d = 0.4117 (moderate) 
 
 
 ```
 
-# Boxplot to seperate outcomes across studies 
+# Combine all Two Group Effect Sizes into CSV spreadsheet on Excel
 ```{r}
-boxplot(yi ~ outcome, data = dbtstma)
 
-# To visualize different outcomes
+# This method is a small wrapper to write csv-files. It writes the results from combine_esc into an Excel csv-file.
+write_esc(a1, a2, a3, d1, psychiatric1, psychiatric2, psychiatric3, psychiatric4, psychotic1, bpd1, bpd2, bpd3, bpd4, bpd5, bpd6, bpd7, h1, h2, c1, c2, dt1,  path = "EffSizes2Group")
 
 ```
 
 
+###### One group Pre and Post (No Control) ####################################
 
 
-# Funnel Plot
+
+# Effect size of coping
 ```{r}
-funnel(ma_model)
 
-# A common way to investigate potential publication bias in a meta-analysis is the funnel plot. Asymmetrical distribution indicates potential publication bias.
+# Sakdalan et al. (2009): VABS-II - coping skills
+esc_t(t = -1.5, grp1n = 9, grp2n = 9) #???paired t-test for one group, no control, pre-post measures, mean
+
+# Shelton et al. (2011): WCCL - coping strategy
+esc_t(t = 2.529, grp1n = 38, grp2n = 38) #???paired t-test for one group, no control, pre-post measures
+
+
+```
+
+
+
+# Effect size of Learning Disabilities 
+```{r}
+
+# Sakdalan et al. (2009): HONOS-LD - Learning Disability
+esc_t(t = 2.6, grp1n = 9, grp2n = 9) #???paired t-test for one group, no control, pre-post measures, mean
+
+
+tes(t=2.6, n.1 = 9, n.2 = 9, level = 95, cer = 0.2, dig = 2, verbose = TRUE, id=NULL, data=NULL)
+
+
+```
+
+
+
+# Effect size of Physical Aggression 
+```{r}
+# Shelton et al. (2011): BPAQ - physical aggression
+esc_t(t = 7.576, grp1n = 38, grp2n = 38) #???paired t-test for one group, no control, pre-post measures
+
+
+
+```
+
+
+
+
+# Effect size of Disciplinary Tickets 
+```{r}
+# Shelton et al. (2011): disciplinary tickets
+esc_t(t = 2.753, grp1n = 38, grp2n = 38) #???paired t-test for one group, no control, pre-post measures
 
 ```
 
@@ -84,6 +296,36 @@ funnel(ma_model)
 
 
 
+###### Which outcome does these findings belong? #################
+```{r}
 
+# Sambrook et al. (2006) 
+Secondary data were gathered using the CORE, a 34 item self-rated questionnaire designed specifically as an outcome measure for psychotherapy (Barkham, Evans, Margison, McGrath, Mellor, Clarke, Milne & Connell, 1998), assessing subjective well-being, problems/symptoms (ratings of both anxiety and depression), life functioning (perceived coping) and risk (both to self and others).  
+
+An initial Friedman’s analysis showed a significant interaction between CORE scores and passage of time across formulation, start and end of ECS group (df3, p=0.02). Wilcoxon pairwise analyses revealed a significant fall only between formulation and end of group (z= -2.84; p = 0.003). 
+
+# Sambrook et al. (2006)
+The Work and Social Adjustment Scale (SAS; Marks, 1986) asks participants to rate (scale 0, not at all – 8, very severely) how much their problems impact on work, home management, private and social leisure activities, and family relationships (range 0-40).
+
+There was a decrease between  SAS scores over time , but subsequent pairwise comparisons showed this to only approached significance between formulation and the end of group (z = -1.909 p=.056).  
+
+# Sakdalan et al. (2009)
+The START is a 20-item clinical guide for the
+dynamic assessment of risk and strength domains.
+The START items include social skills, relationships,
+occupational skills, recreational skills, selfcare,
+mental state, emotional state, substance use,
+impulse control, external triggers, social support,
+material resources, attitudes, medical adherence,
+rule adherence, conduct, insight, plans, coping and
+treatability.
+
+   
+esc_t(t = 3.26, grp1n = 9, grp2n = 9) #??? #paired t-test for one group, no control, pre-post measures
+
+
+esc_t(t = -4.00, grp1n = 9, grp2n = 9) #??? #paired t-test for one group, no control, pre-post measures. mean
+
+```
 
 # 

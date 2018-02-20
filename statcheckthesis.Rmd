@@ -40,48 +40,73 @@ library("statcheck")
 ```{r}
 # Only input p-values that met critiera for p-curve 
 
-# Sambrook et al. (2006)
+# 1) Sambrook et al. (2006)
 study1 <- "z = -2.84, p = .003. z = -1.909, p = .056"
-  
-# Shelton et al. (2009)
+
+
+# 2) Shelton et al. (2009)
 # calculated df = 124 - 2 = 122
 study2 <- "t(122)=2.292, p=.025. F(122)=5.52, p=.023. F(122)=4.51, p=.039. F(61)=5.27, p=.008."
 
-# Sakdalan et al. (2010)
+# 3) Sakdalan et al. (2010)
 # calculated df = 6 - 1 = 5
-study3<- "t(5) = 3.26, p = .05. t(5) = -4.00, p = .01. t(5) = 2.60, p = .05. t(5) = -1.50"
-# study3<- "t(5) = 3.26, p = .0224. t(5) = -4.00, p = .0103. t(5) = 2.60, p = .0482. t(5) = -1.50, p = .1939" # recomputed p < 0.05 / p < 0.01
+# Did not recompute p < 0.05 or p < 0.01, will mention in dicussion
+study3<- "t(5) = 3.26, p < .05. t(5) < -4.00, p < .01. t(5) < 2.60, p < .05. t(5) < -1.50"
 
-# Shelton et al. (2011)
+
+# 4) Shelton et al. (2011)
 study4 <- "t(21) = 7.576, p = .000. t(9) = 2.529, p = .032. t(24) = 2.753, p = .011"
 
-# Telch et al. (2000)only reported effect sizes
+# 5) Telch et al. (2000)
+# Reported effect sizes
 # study5
 
-# Nelson-Gray et al. (2006)
+# 6) Nelson-Gray et al. (2006)
 # Bonferroni correction alpha levels were used instead of p-values, "p-value is statistically significant (i.e., less than the alpha value of the ordered Bonferroni correction)" = not compatible with statcheck
 # study6  
 
-# Blackford & Love (2011)
+# 7) Blackford & Love (2011)
 # Reported Spearman's correlations
 study7 <- "t(11) = 2.81, p = .02."
 
-# Drossel et al. (2011)
+# 8) Drossel et al. (2011)
 # Bonferroni correction alpha levels were used instead of p-values, "p-value is statistically significant (i.e., less than the alpha value of the ordered Bonferroni correction)" = not compatible with statcheck
 # study8  
 
+# 9) Long et al. (2011)
+# Did not recompute p < 0.05 or p < 0.01, will mention in dicussion
+study9 <- "t(24) = 1.86, p < .01. t(24) = 2.57, p < .0. t(24) = 1.75, p < .05. t(24) = 1.52, p < .05. t(24) = 2.87, p < .01. t(24) = 3.21, p < .01. t(24) = 2.88, p < .01. t(21) = 3.1, p < .05. t(21) = 2.89, p < .05. t(21) < 2.92, p < .01. t(21) = 3,21, p < .01"
 
-study9 <- "t(24) = 1.86, p = .037. t(24) = 2.57, p < .0084. t(24) = 1.75, p = .046. t(24) = 1.52, p = .707. t(24) = 2.87, p = .004. t(24) = 3.21, p = .001. t(21) = 3.1, p = .002. t(21) = 2.89, p = .004. t(21) = 2.92, p = .004. t(21) = 3,21, p = .002"
+# 10) Safer et al. (2001)
+# Did not recompute p < 0.05 or p < 0.01, will mention in dicussion
+study10 <- "F(1,26) = 30.87 , p < .001. F(1,26) = 11.29, p = .002. F(1,26) = 5.94, p < .03. F(1,25) = 4.83, p < .04. F(1,26) = 8.96, p = .006. F(1,26) = 8.89, p = .006. F(1,26) = 8.14, p = .008. F(1,25) = 1.99, p = .17. F(1,25) = 0.01, p = .94. F(1,25) = 6.30, p < .02.          F(1,26) = 2.78, p = .11"
 
-study10 <- "F(1,26) = 30.87 , p = .001. F(1,26) = 11.29, p = .002. F(1,26) = 5.94, p = .0220. F(1,25) = 4.83, p = .0374. F(1,26) = 8.96, p = .006. F(1,26) = 8.89, p = .006. F(1,26) = 8.14, p = .008. F(1,25) = 1.99, p = .17. F(1,25) = 0.01, p = .94. F(1,25) = 6.30, p = .0189.          F(1,26) = 2.78, p = .11"
+# 11) Telch et al. (2001)
+study11 <- "F(1,31) = 41.3 , p = .000. F(1,31) = 39 , p = .000. F(1,31) = 2.4 , p = .130. F(1,31) = 5.9 , p = .020. F(1,31) = 41.3 , p = .000. F(1,31) = 4.9 , p = .030. F(1,31) = 20.9 , p = .000. F(1,31) = 1 , p = .330. F(1,29) = 14 , p = .001. F(1,30) = 3 , p = .09. F(1,30) = 4.2 , p = .05. F(1,30) = 3.9 , p = .06. F(1,30) = 2.8 , p = .10. F(1,30) = 2.7 , p = .11.  F(1,30) = 2.1 , p = .16. F(1,27) = 0.57 , p = .46. F(1,30) = 3.5 , p = .07."
 
-study11 <- "F(1,17) = 4.63 , p = .0461. F(1,17) = 9.50, p = .0068. F(1,17) = 7.16, p = .0160. F(1,17) = 1.88, p = .1882. F(1,17) = 4.16, p = .0572. F(1,17) = 1.14, p = .3006. F(1,17) = 5.58, p = .0304. F(1,17) = 1.99, p = .0144"
+# 12) Harley et al. (2008)
+# calculated df = 19 - 2 = 17
+# Did not recompute p < 0.05 or p < 0.01, will mention in dicussion
+study12 <- "F(1,17) = 4.63, p < .05. F(1,17) = 9.50, p < .001. F(1,17) = 7.16, p < .05. F(1,17) = 1.88.  F(1,17) = 4.16. F(1,17) = 1.14. F(1,17) = 9.50, p < .001. F(1,17) = 5.58, p < .05. F(1,17) = 7.43, p < .05."
 
-study12 <- "F(1,17) = 4.63 , p = .0461. F(1,17) = 9.50, p = .0068. F(1,17) = 7.16, p = .0160. F(1,17) = 1.88, p = .1882. F(1,17) = 4.16, p = .0572. F(1,17) = 1.14, p = .3006. F(1,17) = 5.58, p = .0304. F(1,17) = 1.99, p = .0144"
+# 13) Feldman et al. (2000)
+# Excluded R-squared findings because statcheck can not compute
+study13 <- "F(1,17) = 7.88, p = .01. F(1,17) = 2.41, p = .14. F(1,17) = 1.76, p = .097."
 
-study13 <- "F (1,17) = 7.88; p = .01. F(1, 17) = 2.41; p = .14"
+# 14) Soler et al. (2009)
+study14 <- "F(37.93) = 4.59, p = .001. F(39.97) = 2.45, p = .034. F(32.95) = 2.90, p = .018. F(21.92) = 3.95, p = .034. F(17.72) = 4.37, p = .028. F(38.69) = 3.26, p = .008. F(37.47) = 2.80, p = .019. F(37.65) = 3.74, p = .004."
 
-stat <- statcheck(c(study1,study2,study3,study4,study7,study9, study10, study11))
+# 15) Safer et al. (2010)
+# Reported effect sizes
+# study15
+
+# 16) Safer & Joyce (2011)
+study16 <- "t(97) = -2, p = .054. t(99) = -1.2, p = .239. t(97) = -2.10, p = .039. t(99) = 1.9, p = .060. χ2(1) = 5.97, p = .015. χ2(1) = 13.6, p < .001. χ2(1) = 5.86, p = .015. χ2(1) = 3.3, p = .069. χ2(1) = 13.6, p < .001."
+
+# 17) Hirvikoski et al. (2011)
+study17 <- 
+
+stat <- statcheck(c(study1, study2, study3, study4, study7, study9, study10, study11, study12, study14, study16, study17))
 
 
 summary(stat)

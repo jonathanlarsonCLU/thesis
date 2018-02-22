@@ -104,7 +104,7 @@ study14 <- "F(37.93) = 4.59, p = .001. F(39.97) = 2.45, p = .034. F(32.95) = 2.9
 study16 <- "t(97) = -2, p = .054. t(99) = -1.2, p = .239. t(97) = -2.10, p = .039. t(99) = 1.9, p = .060. χ2(1) = 5.97, p = .015. χ2(1) = 13.6, p < .001. χ2(1) = 5.86, p = .015. χ2(1) = 3.3, p = .069. χ2(1) = 13.6, p < .001."
 
 # 17) Hirvikoski et al. (2011)
-study17 <- 
+study17 <- "t(48) = -.73, p = .47. t(48) = -.41, p = .68. t(48) = .32, p = .75. t(48) = -.72, p = .46. t(48) = -.36, p = .72. F(1,35) = 4.35, p = .04."
 
 stat <- statcheck(c(study1, study2, study3, study4, study7, study9, study10, study11, study12, study14, study16, study17))
 
@@ -113,7 +113,7 @@ summary(stat)
 plot(stat)
 
 ```
-# Results: Of the 6 reviewed studies, study9: Long et al., (2011) was the only one with statistical errors of reporting. This however may be due the fact all of the p-values were reported with p < .05 or p < .01. Therefore, given that only 1 error was found in the remaining 5 reviewed studies, preliminary evidence suggests that there were no signficant errors in reporting. Review this article for further explanation: http://daniellakens.blogspot.com/2015/10/checking-your-stats-and-some-errors-we.html
+# Results: 69 p-values, 16 errors
 
 
 

@@ -32,42 +32,59 @@ library("ggplot2")
 ```{r}
 
 # Safer et al. (2009): HRSA - anxiety
-a1 <- esc_mean_sd(grp1m = 13, grp1sd = 5.46, grp1n = 42, grp2m = 16.56, grp2sd = 5,
+anxiety1 <- esc_mean_sd(grp1m = 13, grp1sd = 5.46, grp1n = 42, grp2m = 16.56, grp2sd = 5,
                   grp2n = 37, es.type = "d", study = "Safer et al 2009")
 
-# Safer et al. (2010): EES-anxiety - anxiety 
-a2 <- esc_mean_sd(grp1m = 1.51, grp1sd = 0.87, grp1n = 50, grp2m = 1.81, grp2sd = 0.89,
+# Safer et al. (2010): Emotional Eating Scale-Anxiety - anxiety 
+anxiety2 <- esc_mean_sd(grp1m = 1.51, grp1sd = 0.87, grp1n = 50, grp2m = 1.81, grp2sd = 0.89,
                   grp2n = 51, es.type = "d", study = "Safer et al 2010")
 
 # Soler et al. (2009): HRSA - anxiety 
 # Assumed N1, N2
-a3 <- esc_mean_sd(grp1m = 13, grp1sd = 5.46, grp1n = 23, grp2m = 16.56, grp2sd = 5,
+anxiety3 <- esc_mean_sd(grp1m = 13, grp1sd = 5.46, grp1n = 23, grp2m = 16.56, grp2sd = 5,
                   grp2n = 26, es.type = "d", study = "Soler et al. 2009")
 
+# Hirvikoski et al. (2011): Beck Anxiety Inventory - anxiety 
+anxiety4 <- esc_mean_sd(grp1m = 15.08, grp1sd = 11.06, grp1n = 26, grp2m = 13.83, grp2sd = 10.14,
+                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
 
 
 
-anxiety <- combine_esc(a1, a2, a3)
+anxietyez <- combine_esc(anxiety1, anxiety2, anxiety3, anxiety4)
 
-metafor::rma(yi = es, sei = se, method = "REML", data = anxiety)
+metafor::rma(yi = es, sei = se, method = "REML", data = anxietyez)
 
-#  d =  -0.5264 (moderate) 
+#  d =  -0.4014 (medium) 
 
+# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 
 ```
+
+
 # Effect size of Depression
 ```{r}
+
 # Soler et al. (2009):  HRSD-17 - depression
 # Assumed N1, N2
-d1 <- esc_mean_sd(grp1m = 11.11, grp1sd = 3.99, grp1n = 23, grp2m = 16, grp2sd = 5.78,
+depression1 <- esc_mean_sd(grp1m = 11.11, grp1sd = 3.99, grp1n = 23, grp2m = 16, grp2sd = 5.78,
                   grp2n = 26, es.type = "d", study = "Soler et al 2009")
 
-depression <- combine_esc(d1)
+# Hirvikoski et al. (2011): Beck Depression Inventory - depression 
+depression2 <- esc_mean_sd(grp1m = 16.60, grp1sd = 10.19, grp1n = 26, grp2m = 14.36, grp2sd = 11.41,
+                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
+
+# Safer et al. (2010): Emotional Eating Scale-Depression - depression 
+depression3 <- esc_mean_sd(grp1m = 2., grp1sd = 0.87, grp1n = 50, grp2m = 1.81, grp2sd = 0.89,
+                  grp2n = 51, es.type = "d", study = "Safer et al 2010")
+
+
+depressionez <- combine_esc(depression1, depression2)
 
 metafor::rma(yi = es, sei = se, method = "REML", data = depression)
 
-#  d = -0.9737 (large) 
+#  d =  -0.377 (small) 
 
+# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 
 ```
 
@@ -95,8 +112,9 @@ psychiatric <- combine_esc(psychiatric1, psychiatric2, psychiatric3, psychiatric
 
 metafor::rma(yi = es, sei = se, method = "REML", data = psychiatric)
 
-#  d =-0.5371 (moderate) 
+#  d =-0.5371 (medium) 
 
+# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 ```
 
 # Effect size of Psychotic Symptoms
@@ -110,7 +128,29 @@ psychotic <- combine_esc(psychotic1)
 
 metafor::rma(yi = es, sei = se, method = "REML", data = psychotic)
 
-#  d = -0.6673 (moderate) 
+#  d = -0.6673 (medium) 
+
+# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
+
+```
+
+# Effect size of Stress  
+```{r}
+
+# Hirvikoski et al. (2011): Perceived Stress Scale - stress 
+stress1 <- esc_mean_sd(grp1m = 25.23, grp1sd = 9.39, grp1n = 26, grp2m = 26, grp2sd = 7.74,
+                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
+
+
+
+```
+
+# Effect size of Sleep 
+```{r}
+
+# Hirvikoski et al. (2011): Karolinska Sleep Questionnaire - sleep 
+sleep1 <- esc_mean_sd(grp1m = 31.88, grp1sd = 15.24, grp1n = 26, grp2m = 28.88, grp2sd = 14.23,
+                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
 
 
 ```
@@ -119,6 +159,16 @@ metafor::rma(yi = es, sei = se, method = "REML", data = psychotic)
 ```{r}
 
 
+
+
+```
+
+# Effect size of Disability  
+```{r}
+
+# Hirvikoski et al. (2011): Sheehan Disability Scale - disability 
+s1 <- esc_mean_sd(grp1m = 6.23, grp1sd = 1.99, grp1n = 26, grp2m = 6, grp2sd = 2.40,
+                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
 
 
 ```
@@ -165,9 +215,9 @@ bpd <- combine_esc(bpd1, bpd2, bpd3, bpd4, bpd5, bpd6, bpd7)
 
 metafor::rma(yi = es, sei = se, method = "REML", data = bpd)
 
-#  d =  -0.6244 (moderate) 
+#  d =  -0.6244 (medium) 
 
-
+# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 ```
 
 # Effect size of Hostility (Irritability)
@@ -186,9 +236,9 @@ hostility <- combine_esc(h1, h2)
 
 metafor::rma(yi = es, sei = se, method = "REML", data = hostility)
 
-#  d =  -0.5695 (moderate) 
+#  d =  -0.5695 (medium) 
 
-
+# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 ```
 
 # Effect size of Coping
@@ -206,12 +256,31 @@ coping <- combine_esc(c1, c2)
 
 metafor::rma(yi = es, sei = se, method = "REML", data = coping)
 
-#  d = 0.3955 (moderate) 
+#  d = 0.3955 (medium) 
+
+# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
+```
+
+# Effect size of Intelligence 
+```{r}
+
+# Hirvikoski et al. (2011): Full Scale IQ - intelligence 
+s1 <- esc_mean_sd(grp1m = 99.92, grp1sd = 12.58, grp1n = 26, grp2m = 99.87, grp2sd = 12.85,
+                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
 
 
 ```
 
+# Effect size of ADHD 
+```{r}
 
+# Hirvikoski et al. (2011): Wender Utah Rating Scale - childhood ADHD 
+adhd1 <- esc_mean_sd(grp1m = 31.88, grp1sd = 15.24, grp1n = 26, grp2m = 28.88, grp2sd = 14.23,
+                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
+
+
+
+```
 
 # Effect size of Disciplinary Tickets
 ```{r}
@@ -222,10 +291,12 @@ disctickets <- combine_esc(dt1)
 
 metafor::rma(yi = es, sei = se, method = "REML", data = disctickets)
 
-#  d = 0.4117 (moderate) 
+#  d = 0.4117 (medium) 
 
+# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 
 ```
+
 
 # Combine all Two Group Effect Sizes into CSV spreadsheet on Excel
 ```{r}
@@ -236,9 +307,9 @@ write_esc(a1, a2, a3, d1, psychiatric1, psychiatric2, psychiatric3, psychiatric4
 ```
 
 
+
+
 ###### One group Pre and Post (No Control) ####################################
-
-
 
 # Effect size of coping
 ```{r}

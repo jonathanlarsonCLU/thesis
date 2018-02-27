@@ -460,7 +460,7 @@ metafor::rma(yi = es, sei = se, method = "REML", data = bpd)
 #  d =  -0.6244 (medium) 
 
 # Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
-```
+``` 
 
 # Effect size of Hostility (Irritability)
 ```{r}

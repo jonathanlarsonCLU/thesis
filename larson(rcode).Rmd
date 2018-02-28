@@ -49,7 +49,7 @@ anxietyez <- combine_esc(anxiety1, anxiety2, anxiety3)
 
 metafor::rma(yi = es, sei = se, method = "REML", data = anxietyez)
 
-#  d =  -0.4014 (medium) 
+#  d =   -0.3231 (small) 
 
 # Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 
@@ -97,68 +97,20 @@ depression8 <- esc_mean_sd(grp1m = 15.10, grp1sd = 12.13, grp1n = 10, grp2m = 25
 depression9 <- esc_mean_sd(grp1m = 11.30, grp1sd = 5.31, grp1n = 10, grp2m = 17.11, grp2sd = 6.23,
                   grp2n = 9, es.type = "d", study = "Harley et al 2008")
 
-depressionez <- combine_esc(depression1, depression2)
+# Safer & Joyce (2011): Beck Depression Inventory  
+depression10 <- esc_mean_sd(grp1m = 7, grp1sd = 6, grp1n = 41, grp2m = 12, grp2sd = 8.8,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
 
-metafor::rma(yi = es, sei = se, method = "REML", data = depression)
+depressionez <- combine_esc(depression1, depression2, depression3, depression4, depression5, depression6, depression7, depression8, depression9, depression10)
 
-#  d =  -0.377 (small) 
+metafor::rma(yi = es, sei = se, method = "REML", data = depressionez)
 
-# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
-
-```
-
-
-
-# Effect size of Psychiatric Symptoms
-```{r}
-# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - global severity index
-# Assumed N1, N2
-psychiatric1 <- esc_mean_sd(grp1m = 2.09, grp1sd = 1.07, grp1n = 23, grp2m = 2.50, grp2sd = 0.86,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - interpersonal sensitivity
-# Assumed N1, N2
-psychiatric2 <- esc_mean_sd(grp1m = 18.50, grp1sd = 10.05, grp1n = 23, grp2m = 26.00, grp2sd =                      8.34, grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - hostility
-# Assumed N1, N2
-psychiatric3 <- esc_mean_sd(grp1m = 13.00, grp1sd = 8.59, grp1n = 23, grp2m = 15.85, grp2sd =                       8.17, grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - psychoticism
-# Assumed N1, N2
-psychiatric4 <- esc_mean_sd(grp1m = 16.37, grp1sd = 11.09, grp1n = 23, grp2m = 22.28, grp2sd =                      9.19, grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Safer et al. (2001): Multidimensional Personality Scale score
-pyschiatric5 <- esc_mean_sd(grp1m = 16.4, grp1sd = 5.9, grp1n = 14, grp2m = 15.6, grp2sd = 6.8,
-                  grp2n = 15, es.type = "d", study = "Safer et al 2001")
-
-
-
-psychiatric <- combine_esc(psychiatric1, psychiatric2, psychiatric3, psychiatric4)
-
-metafor::rma(yi = es, sei = se, method = "REML", data = psychiatric)
-
-#  d =-0.5371 (medium) 
-
-# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
-```
-
-# Effect size of Psychotic Symptoms
-```{r}
-# Soler et al. (2009): Brief Psychiatric Rating Scale for psychotic symptoms
-# Assumed N1, N2
-psychotic1 <- esc_mean_sd(grp1m = 8.74, grp1sd = 5.06, grp1n = 23, grp2m = 11.89, grp2sd = 4.40,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-psychotic <- combine_esc(psychotic1)
-
-metafor::rma(yi = es, sei = se, method = "REML", data = psychotic)
-
-#  d = -0.6673 (medium) 
+#  d =  -0.4017 (medium) 
 
 # Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 
 ```
+
 
 # Effect size of Eating  
 ```{r}
@@ -254,9 +206,97 @@ eating19 <- esc_mean_sd(grp1m = 1.5, grp1sd = 0.9, grp1n = 18, grp2m = 2.4, grp2
 eating20 <- esc_mean_sd(grp1m = 2.4, grp1sd = 1, grp1n = 18, grp2m = 3, grp2sd = 0.8,
                   grp2n = 16, es.type = "d", study = "Telch et al 2001")
 
+# Safer & Joyce (2011): Objective binge days 
+eating20 <- esc_mean_sd(grp1m = 1.7, grp1sd = 4.5, grp1n = 41, grp2m = 4.4, grp2sd = 5.3,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
 
+# Safer & Joyce (2011): Eating Disorder Examination-Restraint
+eating21 <- esc_mean_sd(grp1m = 1.4, grp1sd = 0.94, grp1n = 41, grp2m = 1.8, grp2sd = 1.3,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
 
+# Safer & Joyce (2011): Eating Disorder Examination-Weight Concerns 
+eating22 <- esc_mean_sd(grp1m = 2.5, grp1sd = 1, grp1n = 41, grp2m = 3, grp2sd = 1.3,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011): Eating Disorder Examination-Shape Concerns 
+eating23 <- esc_mean_sd(grp1m = 2.3, grp1sd = 1.1, grp1n = 41, grp2m = 3.2, grp2sd = 1.3,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011): Eating Disorder Examination-Eating Concerns 
+eating24 <- esc_mean_sd(grp1m = 0.4, grp1sd = 0.6, grp1n = 41, grp2m = 1.1, grp2sd = 1.3,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011): Three Factor Eating Questionnaire-Cognitive Restraint 
+eating25 <- esc_mean_sd(grp1m = 10.9, grp1sd = 4, grp1n = 41, grp2m = 9.9, grp2sd = 3.8,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011): Three Factor Eating Questionnaire-Disinhibition
+eating26 <- esc_mean_sd(grp1m = 9.7, grp1sd = 3.8, grp1n = 41, grp2m = 12.2, grp2sd = 3.1,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011): Three Factor Eating Questionnaire-Hunger
+eating27 <- esc_mean_sd(grp1m = 6, grp1sd = 3.9, grp1n = 41, grp2m = 8.4, grp2sd = 3.8,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011): Body mass index
+eating28 <- esc_mean_sd(grp1m = 35.6, grp1sd = 8.3, grp1n = 41, grp2m = 36.1, grp2sd = 8.4,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+# Safer & Joyce (2011): Weight
+eating29 <- esc_mean_sd(grp1m = 214.6, grp1sd = 50.4, grp1n = 41, grp2m = 219.1, grp2sd = 54.8,
+                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
+
+eatingez <- combine_esc(eating1, eating2, eating3, eating4, eating5, eating6, eating7, eating8, eating9, eating10, eating11, eating12, eating13, eating14, eating15, eating16, eating17, eating18, eating19, eating20, eating21, eating22, eating23, eating24, eating25, eating26, eating27, eating28, eating29)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = eatingez)
+
+#  d =  -0.5377 (medium) 
+
+# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 ```
+
+# Effect size of Psychiatric Symptoms
+```{r}
+# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - global severity index
+# Assumed N1, N2
+psychiatric1 <- esc_mean_sd(grp1m = 2.09, grp1sd = 1.07, grp1n = 23, grp2m = 2.50, grp2sd = 0.86,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - interpersonal sensitivity
+# Assumed N1, N2
+psychiatric2 <- esc_mean_sd(grp1m = 18.50, grp1sd = 10.05, grp1n = 23, grp2m = 26.00, grp2sd =                      8.34, grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - hostility
+# Assumed N1, N2
+psychiatric3 <- esc_mean_sd(grp1m = 13.00, grp1sd = 8.59, grp1n = 23, grp2m = 15.85, grp2sd =                       8.17, grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - psychoticism
+# Assumed N1, N2
+psychiatric4 <- esc_mean_sd(grp1m = 16.37, grp1sd = 11.09, grp1n = 23, grp2m = 22.28, grp2sd =                      9.19, grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+# Safer et al. (2001): Multidimensional Personality Scale score
+pyschiatric5 <- esc_mean_sd(grp1m = 16.4, grp1sd = 5.9, grp1n = 14, grp2m = 15.6, grp2sd = 6.8,
+                  grp2n = 15, es.type = "d", study = "Safer et al 2001")
+
+# Soler et al. (2009): Brief Psychiatric Rating Scale for psychotic symptoms
+# Assumed N1, N2
+pyschiatric6 <- esc_mean_sd(grp1m = 8.74, grp1sd = 5.06, grp1n = 23, grp2m = 11.89, grp2sd = 4.40,
+                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+
+
+
+psychiatric <- combine_esc(psychiatric1, psychiatric2, psychiatric3, psychiatric4)
+
+metafor::rma(yi = es, sei = se, method = "REML", data = psychiatric)
+
+#  d =-0.5371 (medium) 
+
+# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
+```
+
+
+
+
 
 # Effect size of Emotion Processing 
 ```{r}
@@ -286,7 +326,7 @@ selfesteem3 <- esc_mean_sd(grp1m = 29.4, grp1sd = 6.1, grp1n = 18, grp2m = 29.2,
 
 ```
 
-# Effect size of Stress  
+# Effect size of Mood / Affect 
 ```{r}
 
 # Hirvikoski et al. (2011): Perceived Stress Scale

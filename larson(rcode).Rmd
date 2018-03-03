@@ -28,6 +28,7 @@ library("ggplot2")
 
 ##### Two group Pre and Post #################
 
+
 # Effect Size of Anxiety 
 ```{r}
 
@@ -254,6 +255,8 @@ metafor::rma(yi = es, sei = se, method = "REML", data = eatingez)
 
 # Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 ```
+
+#### Below is work in progress ###############
 
 # Effect size of Psychiatric Symptoms
 ```{r}
@@ -593,38 +596,27 @@ write_esc(a1, a2, a3, d1, psychiatric1, psychiatric2, psychiatric3, psychiatric4
 
 ###### One group Pre and Post (No Control) ####################################
 
-# Effect size of coping
+# Effect size of coping 
 ```{r}
+# Results: To test the hypothesis that participants will show reduced aggression, impulsivity, and improved coping, after completing the DBT-CM groups: physical aggression as measured by BPAQ (t= 7.576, df=21, p=.000) and using distancing (WCCL subscale) as a coping strategy (t=2.529, df=9, p=.032) showed statistical differences at post-test. There was a significant change in disciplinary tickets from pre to posttest (t=2.753, df =24, p =.011), indicating that correctional officers observed an improvement in aggressive and impulsive behavior following the intervention.
 
-# Sakdalan et al. (2009): VABS-II - coping skills
-esc_t(t = -1.5, grp1n = 9, grp2n = 9) #???paired t-test for one group, no control, pre-post measures, mean
 
 # Shelton et al. (2011): WCCL - coping strategy
-esc_t(t = 2.529, grp1n = 38, grp2n = 38) #???paired t-test for one group, no control, pre-post measures
-
-
-```
-
-
-
-# Effect size of Learning Disabilities 
-```{r}
-
-# Sakdalan et al. (2009): HONOS-LD - Learning Disability
-esc_t(t = 2.6, grp1n = 9, grp2n = 9) #???paired t-test for one group, no control, pre-post measures, mean
-
-
-tes(t=2.6, n.1 = 9, n.2 = 9, level = 95, cer = 0.2, dig = 2, verbose = TRUE, id=NULL, data=NULL)
-
+# N = 26, df = 9, p = .032
+esc_t(t = 2.529, grp1n = , grp2n = ) #???paired t-test for one group, no control, pre-post measures
 
 ```
+
 
 
 
 # Effect size of Physical Aggression 
 ```{r}
+# Results: To test the hypothesis that participants will show reduced aggression, impulsivity, and improved coping, after completing the DBT-CM groups: physical aggression as measured by BPAQ (t= 7.576, df=21, p=.000) and using distancing (WCCL subscale) as a coping strategy (t=2.529, df=9, p=.032) showed statistical differences at post-test. There was a significant change in disciplinary tickets from pre to posttest (t=2.753, df =24, p =.011), indicating that correctional officers observed an improvement in aggressive and impulsive behavior following the intervention.
+
 # Shelton et al. (2011): BPAQ - physical aggression
-esc_t(t = 7.576, grp1n = 38, grp2n = 38) #???paired t-test for one group, no control, pre-post measures
+# N = 26, df = 21, p = .000
+esc_t(t = 7.576, grp1n = , grp2n = ) #???paired t-test for one group, no control, pre-post measures
 
 
 
@@ -635,8 +627,11 @@ esc_t(t = 7.576, grp1n = 38, grp2n = 38) #???paired t-test for one group, no con
 
 # Effect size of Disciplinary Tickets 
 ```{r}
+# Results: To test the hypothesis that participants will show reduced aggression, impulsivity, and improved coping, after completing the DBT-CM groups: physical aggression as measured by BPAQ (t= 7.576, df=21, p=.000) and using distancing (WCCL subscale) as a coping strategy (t=2.529, df=9, p=.032) showed statistical differences at post-test. There was a significant change in disciplinary tickets from pre to posttest (t=2.753, df =24, p =.011), indicating that correctional officers observed an improvement in aggressive and impulsive behavior following the intervention.
+
 # Shelton et al. (2011): disciplinary tickets
-esc_t(t = 2.753, grp1n = 38, grp2n = 38) #???paired t-test for one group, no control, pre-post measures
+# N = 26, df = 24, p = .011
+esc_t(t = 2.753, grp1n = , grp2n = ) #???paired t-test for one group, no control, pre-post measures
 
 ```
 

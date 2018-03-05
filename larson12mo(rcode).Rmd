@@ -82,6 +82,19 @@ metafor::rma(yi = es, sei = se, method = "REML", data = eat12mo)
 ```
 
 
+# Preliminary Forest Plot of Eating Outcomes at 12 months
+```{r}
+
+eating12 <- rma(yi = es, sei = se, method = "REML", data = eat12mo)
+eating12
+forest(eating12)
+
+
+
+
+```
+
+
 # Preliminary Calculated Effect Sizes of Depression
 ```{r}
 
@@ -102,6 +115,36 @@ metafor::rma(yi = es, sei = se, method = "REML", data = dep12mo)
 #  d =  -0.3206  (small) 
 
 ```
+
+
+
+# Preliminary Forest Plot of Eating Outcomes at 12 months
+```{r}
+
+metafor::rma(yi = es, sei = se, method = "REML", data = dep12mo)
+depression12 <- rma(yi = es, sei = se, method = "REML", data = dep12mo)
+depression12
+forest(depression12)
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

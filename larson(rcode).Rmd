@@ -132,7 +132,7 @@ eating3 <- esc_mean_sd(grp1m = 2.62, grp1sd = 1.15, grp1n = 43, grp2m = 3.03, gr
 eating4 <- esc_mean_sd(grp1m = 0.54, grp1sd = 0.71, grp1n = 43, grp2m = 1.14, grp2sd = 1.39,
                   grp2n = 43, es.type = "d", study = "Safer et al 2010")
 
-# Safer et al. (2010): Weight (pounds)
+# Safer et al. (2010): Weight-pounds
 eating5 <- esc_mean_sd(grp1m = 212.61, grp1sd = 52.60, grp1n = 43, grp2m = 221.87, grp2sd = 53.19,
                   grp2n = 43, es.type = "d", study = "Safer et al 2010")
 
@@ -162,7 +162,7 @@ eating10 <- esc_mean_sd(grp1m = 0, grp1sd = 0, grp1n = 18, grp2m = 8.5, grp2sd =
 eating11 <- esc_mean_sd(grp1m = 0, grp1sd = 0, grp1n = 18, grp2m = 10, grp2sd = 14,
                   grp2n = 16, es.type = "d", study = "Telch et al 2001")
 
-# Telch et al. (2001): Weight (pounds)
+# Telch et al. (2001): Weight-pounds
 # Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
 eating12 <- esc_mean_sd(grp1m = 209.2, grp1sd = 49, grp1n = 18, grp2m = 223.8, grp2sd = 37.8,
                   grp2n = 16, es.type = "d", study = "Telch et al 2001")
@@ -243,7 +243,7 @@ eating27 <- esc_mean_sd(grp1m = 6, grp1sd = 3.9, grp1n = 41, grp2m = 8.4, grp2sd
 eating28 <- esc_mean_sd(grp1m = 35.6, grp1sd = 8.3, grp1n = 41, grp2m = 36.1, grp2sd = 8.4,
                   grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
 
-# Safer & Joyce (2011): Weight
+# Safer & Joyce (2011): Weight-pounds
 eating29 <- esc_mean_sd(grp1m = 214.6, grp1sd = 50.4, grp1n = 41, grp2m = 219.1, grp2sd = 54.8,
                   grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
 

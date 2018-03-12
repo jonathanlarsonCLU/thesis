@@ -3,429 +3,71 @@ title: "dbtstmetaanalysis"
 author: "Jonathan"
 date: "January 15, 2018"
 output: pdf_document
-editor_options: 
-  chunk_output_type: console
 ---
 
-# Load Packages
+# Load packages
 ```{r}
 #install.packages("metafor")
 library("metafor")
 
-#install.packages("esc")
-library("esc")
-
-#install.packages("effsize")
-library("effsize")
-
 #install.packages("compute.es")
 library("compute.es")
 
-#install.packages("ggplot2")
-library("ggplot2")
+#install.packages("MAd")
+library("MAd")
+
+#install.packages("readxl")
+library("readxl")
 
 ```
 
-##### Two group Pre and Post #################
-
-
-# Effect Size of Anxiety 
+# Load data
 ```{r}
+# study id, author, year, outcome, test, treatment mean, treatment standard deviation, treatment n, control mean, control standard deviation, control n
+dbtst_raw <- read_excel("larson(raw_ma).xlsx")
+View(dbtst_raw)
 
-# Soler et al. (2009): Hamilton Rating Scale for Anxiety
-anxiety1 <- esc_mean_sd(grp1m = 13, grp1sd = 5.46, grp1n = 42, grp2m = 16.56, grp2sd = 5,
-                  grp2n = 37, es.type = "d", study = "Soler et al 2009")
+# study id, author, year, outcome, test, treatment n, control n, hedge's g, variance of hedge's g, p-value of hedge's g
+dbtst_es <- read_excel("larson(es_ma).xlsx")
+View(dbtst_es)
 
-# Safer et al. (2010): Emotional Eating Scale-Anxiety
-anxiety2 <- esc_mean_sd(grp1m = 1.51, grp1sd = 0.87, grp1n = 43, grp2m = 1.81, grp2sd = 0.89,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
-
-# Hirvikoski et al. (2011): Beck Anxiety Inventory
-anxiety3 <- esc_mean_sd(grp1m = 15.08, grp1sd = 11.06, grp1n = 26, grp2m = 13.83, grp2sd = 10.14,
-                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
-
-
-
-anxietyez <- combine_esc(anxiety1, anxiety2, anxiety3)
-
-metafor::rma(yi = es, sei = se, method = "REML", data = anxietyez)
-
-#  d =   -0.3231 (small) 
-
-# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 
 ```
 
 
-# Effect size of Depression
+# Calculate effect sizes 
 ```{r}
+# The following random-effects meta analysis will follow steps provided from A. C. Del Re's article: "A Practicial Tutorial on Conducting Meta-Analysis in R" to compute Hedge's g effect sizes of Dialetical Behavior Therapy Skills Trainning outcomes. However, unlike A. C. Rel Re's tutorial, moderators were not incorported into the analysis.
 
-# Soler et al. (2009):  Hamilton Rating Scale for Depression 
-# Assumed N1, N2
-depression1 <- esc_mean_sd(grp1m = 11.11, grp1sd = 3.99, grp1n = 23, grp2m = 16, grp2sd = 5.78,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
 
-# Hirvikoski et al. (2011): Beck Depression Inventory 
-depression2 <- esc_mean_sd(grp1m = 16.60, grp1sd = 10.19, grp1n = 26, grp2m = 14.36, grp2sd = 11.41,
-                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
+res1 <- mes(m.1 = m1T, m.2 = m1C, sd.1 = sd1T, sd.2 = sd1C, n.1 = nT, n.2 = nC, id = id, data = dbtst_raw)
 
-# Safer et al. (2010): Emotional Eating Scale-Depression
-depression3 <- esc_mean_sd(grp1m = 2.06, grp1sd = 0.99, grp1n = 43, grp2m = 1.81, grp2sd = 0.89,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
+# View data
+res1
 
-# Safer et al. (2010): Beck Depression Inventory
-depression4 <- esc_mean_sd(grp1m = 9.10, grp1sd = 9.21, grp1n = 43, grp2m = 10.84, grp2sd = 6.86,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
-
-# Safer et al. (2001): Beck Depression Inventory
-depression5 <- esc_mean_sd(grp1m = 13.4, grp1sd = 11.6, grp1n = 14, grp2m = 17.4, grp2sd = 11.8,
-                  grp2n = 15, es.type = "d", study = "Safer et al 2001")
-
-# Telch et al. (2001): Beck Depression Inventory 
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-depression6 <- esc_mean_sd(grp1m = 9.9, grp1sd = 10, grp1n = 18, grp2m = 12.8, grp2sd = 8.3,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Harley et al. (2008): Hamilton Rating Scale for Depression
-depression7 <- esc_mean_sd(grp1m = 11.30, grp1sd = 5.31, grp1n = 10, grp2m = 17.11, grp2sd = 6.3,
-                  grp2n = 9, es.type = "d", study = "Harley et al 2008")
-
-# Harley et al. (2008): Beck Depression Inventory
-depression8 <- esc_mean_sd(grp1m = 15.10, grp1sd = 12.13, grp1n = 10, grp2m = 25.89, grp2sd = 16.30,
-                  grp2n = 9, es.type = "d", study = "Harley et al 2008")
-
-# Feldman et al. (2009): Hamilton Rating Scale for Depression 
-depression9 <- esc_mean_sd(grp1m = 11.30, grp1sd = 5.31, grp1n = 10, grp2m = 17.11, grp2sd = 6.23,
-                  grp2n = 9, es.type = "d", study = "Harley et al 2008")
-
-# Safer & Joyce (2011): Beck Depression Inventory  
-depression10 <- esc_mean_sd(grp1m = 7, grp1sd = 6, grp1n = 41, grp2m = 12, grp2sd = 8.8,
-                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
-
-depressionez <- combine_esc(depression1, depression2, depression3, depression4, depression5, depression6, depression7, depression8, depression9, depression10)
-
-metafor::rma(yi = es, sei = se, method = "REML", data = depressionez)
-
-#  d =  -0.4017 (medium) 
-
-# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
 
 ```
 
 
-# Effect size of Eating  
+# Aggregating dependent effect sizes
 ```{r}
+# Given that studies may report multiple outcome measures, aggregating them prior to analysis is necessary so that each independent sample (study) contributes only a single ES
 
-# Safer et al. (2010): Eating Disorder Examination-Restraint
-eating1 <- esc_mean_sd(grp1m = 1.29, grp1sd = 1.04, grp1n = 43, grp2m = 1.91, grp2sd = 1.23,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
 
-# Safer et al. (2010): Eating Disorder Examination-Weight Concerns 
-eating2 <- esc_mean_sd(grp1m = 2.54, grp1sd = 1.18, grp1n = 43, grp2m = 3, grp2sd = 1.25,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
+dbtst_agg <- agg(id = id, es = g, var = var.g, n.1 = nT, n.2 = nC, cor = 0.5, method = "BHHR", data = dbtst_es)
 
-# Safer et al. (2010): Eating Disorder Examination-Shape Concerns
-eating3 <- esc_mean_sd(grp1m = 2.62, grp1sd = 1.15, grp1n = 43, grp2m = 3.03, grp2sd = 1.35,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
-
-# Safer et al. (2010): Eating Disorder Examination-Eating Concerns
-eating4 <- esc_mean_sd(grp1m = 0.54, grp1sd = 0.71, grp1n = 43, grp2m = 1.14, grp2sd = 1.39,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
-
-# Safer et al. (2010): Weight-pounds
-eating5 <- esc_mean_sd(grp1m = 212.61, grp1sd = 52.60, grp1n = 43, grp2m = 221.87, grp2sd = 53.19,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
-
-# Safer et al. (2010): Body Mass Index
-eating6 <- esc_mean_sd(grp1m = 35.13, grp1sd = 9.03, grp1n = 43, grp2m = 36.65, grp2sd = 7.64,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
-
-# Safer et al. (2001): Emotional Eating Scale subscore scores - Anger
-eating7 <- esc_mean_sd(grp1m = 1.8, grp1sd = 0.8, grp1n = 14, grp2m = 2.6, grp2sd = 0.9,
-                  grp2n = 15, es.type = "d", study = "Safer et al 2001")
-
-# Safer et al. (2001): Emotional Eating Scale subscore scores - Anxiety
-eating8 <- esc_mean_sd(grp1m = 1.3, grp1sd = 0.9, grp1n = 14, grp2m = 2, grp2sd = 0.8,
-                  grp2n = 15, es.type = "d", study = "Safer et al 2001")
-
-# Safer et al. (2001): Emotional Eating Scale subscore scores - Depression
-eating9 <- esc_mean_sd(grp1m = 2.1, grp1sd = 1, grp1n = 14, grp2m = 2.6, grp2sd = 0.7,
-                  grp2n = 15, es.type = "d", study = "Safer et al 2001")
-
-# Telch et al. (2001): Binge days
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-eating10 <- esc_mean_sd(grp1m = 0, grp1sd = 0, grp1n = 18, grp2m = 8.5, grp2sd = 10,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Purge days
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-eating11 <- esc_mean_sd(grp1m = 0, grp1sd = 0, grp1n = 18, grp2m = 10, grp2sd = 14,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Weight-pounds
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-eating12 <- esc_mean_sd(grp1m = 209.2, grp1sd = 49, grp1n = 18, grp2m = 223.8, grp2sd = 37.8,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Eating Disorder Examination-Weight Concerns 
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-eating13 <- esc_mean_sd(grp1m = 2.2, grp1sd = 0.9, grp1n = 18, grp2m = 3.1, grp2sd = 1,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Eating Disorder Examination-Shape Concerns 
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-eating14 <- esc_mean_sd(grp1m = 2.3, grp1sd = 0.9, grp1n = 18, grp2m = 3.1, grp2sd = 1,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Eating Disorder Examination-Eating Concerns 
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-eating15 <- esc_mean_sd(grp1m = 0.4, grp1sd = 0.4, grp1n = 18, grp2m = 1.4, grp2sd = 0.9,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Eating Disorder Examination-Restraint
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-eating16 <- esc_mean_sd(grp1m = 1.4, grp1sd = 1, grp1n = 18, grp2m = 1.8, grp2sd = 1.3,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Binge Eating Scale
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-eating17 <- esc_mean_sd(grp1m = 15.7, grp1sd = 9.4, grp1n = 18, grp2m = 28.2, grp2sd = 8.3,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Emotional Eating Scale subscore scores - Anger
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-eating18 <- esc_mean_sd(grp1m = 1.8, grp1sd = 1, grp1n = 18, grp2m = 2.6, grp2sd = 0.9,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Emotional Eating Scale subscore scores - Anxiety
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-eating19 <- esc_mean_sd(grp1m = 1.5, grp1sd = 0.9, grp1n = 18, grp2m = 2.4, grp2sd = 1,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Emotional Eating Scale subscore scores - Depression
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-eating20 <- esc_mean_sd(grp1m = 2.4, grp1sd = 1, grp1n = 18, grp2m = 3, grp2sd = 0.8,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Safer & Joyce (2011): Objective binge days 
-eating20 <- esc_mean_sd(grp1m = 1.7, grp1sd = 4.5, grp1n = 41, grp2m = 4.4, grp2sd = 5.3,
-                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
-
-# Safer & Joyce (2011): Eating Disorder Examination-Restraint
-eating21 <- esc_mean_sd(grp1m = 1.4, grp1sd = 0.94, grp1n = 41, grp2m = 1.8, grp2sd = 1.3,
-                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
-
-# Safer & Joyce (2011): Eating Disorder Examination-Weight Concerns 
-eating22 <- esc_mean_sd(grp1m = 2.5, grp1sd = 1, grp1n = 41, grp2m = 3, grp2sd = 1.3,
-                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
-
-# Safer & Joyce (2011): Eating Disorder Examination-Shape Concerns 
-eating23 <- esc_mean_sd(grp1m = 2.3, grp1sd = 1.1, grp1n = 41, grp2m = 3.2, grp2sd = 1.3,
-                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
-
-# Safer & Joyce (2011): Eating Disorder Examination-Eating Concerns 
-eating24 <- esc_mean_sd(grp1m = 0.4, grp1sd = 0.6, grp1n = 41, grp2m = 1.1, grp2sd = 1.3,
-                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
-
-# Safer & Joyce (2011): Three Factor Eating Questionnaire-Cognitive Restraint 
-eating25 <- esc_mean_sd(grp1m = 10.9, grp1sd = 4, grp1n = 41, grp2m = 9.9, grp2sd = 3.8,
-                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
-
-# Safer & Joyce (2011): Three Factor Eating Questionnaire-Disinhibition
-eating26 <- esc_mean_sd(grp1m = 9.7, grp1sd = 3.8, grp1n = 41, grp2m = 12.2, grp2sd = 3.1,
-                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
-
-# Safer & Joyce (2011): Three Factor Eating Questionnaire-Hunger
-eating27 <- esc_mean_sd(grp1m = 6, grp1sd = 3.9, grp1n = 41, grp2m = 8.4, grp2sd = 3.8,
-                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
-
-# Safer & Joyce (2011): Body mass index
-eating28 <- esc_mean_sd(grp1m = 35.6, grp1sd = 8.3, grp1n = 41, grp2m = 36.1, grp2sd = 8.4,
-                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
-
-# Safer & Joyce (2011): Weight-pounds
-eating29 <- esc_mean_sd(grp1m = 214.6, grp1sd = 50.4, grp1n = 41, grp2m = 219.1, grp2sd = 54.8,
-                  grp2n = 60, es.type = "d", study = "Safer & Joyce 2011")
-
-eatingez <- combine_esc(eating1, eating2, eating3, eating4, eating5, eating6, eating7, eating8, eating9, eating10, eating11, eating12, eating13, eating14, eating15, eating16, eating17, eating18, eating19, eating20, eating21, eating22, eating23, eating24, eating25, eating26, eating27, eating28, eating29)
-
-metafor::rma(yi = es, sei = se, method = "REML", data = eatingez)
-
-#  d =  -0.5377 (medium) 
-
-# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
+# View aggregated data
+dbtst_agg
 ```
 
-#### Below is work in progress ###############
+# Estimating summary effect
 
-# Effect size of Psychiatric Symptoms
+
+# Forest-Plot of All Outcomes
 ```{r}
-# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - global severity index
-# Assumed N1, N2
-psychiatric1 <- esc_mean_sd(grp1m = 2.09, grp1sd = 1.07, grp1n = 23, grp2m = 2.50, grp2sd = 0.86,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+forest(rma_model, slab = paste(dbtst$study, as.character(dbtst$year), sep = ", "))
 
-# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - interpersonal sensitivity
-# Assumed N1, N2
-psychiatric2 <- esc_mean_sd(grp1m = 18.50, grp1sd = 10.05, grp1n = 23, grp2m = 26.00, grp2sd =                      8.34, grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - hostility
-# Assumed N1, N2
-psychiatric3 <- esc_mean_sd(grp1m = 13.00, grp1sd = 8.59, grp1n = 23, grp2m = 15.85, grp2sd =                       8.17, grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Derogatis Symptom Checklist (SCL90-R) - psychoticism
-# Assumed N1, N2
-psychiatric4 <- esc_mean_sd(grp1m = 16.37, grp1sd = 11.09, grp1n = 23, grp2m = 22.28, grp2sd =                      9.19, grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Safer et al. (2001): Multidimensional Personality Scale score
-pyschiatric5 <- esc_mean_sd(grp1m = 16.4, grp1sd = 5.9, grp1n = 14, grp2m = 15.6, grp2sd = 6.8,
-                  grp2n = 15, es.type = "d", study = "Safer et al 2001")
-
-# Soler et al. (2009): Brief Psychiatric Rating Scale for psychotic symptoms
-# Assumed N1, N2
-pyschiatric6 <- esc_mean_sd(grp1m = 8.74, grp1sd = 5.06, grp1n = 23, grp2m = 11.89, grp2sd = 4.40,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-
-
-psychiatric <- combine_esc(psychiatric1, psychiatric2, psychiatric3, psychiatric4)
-
-metafor::rma(yi = es, sei = se, method = "REML", data = psychiatric)
-
-#  d =-0.5371 (medium) 
-
-# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
-```
-
-
-
-
-
-# Effect size of Emotion Processing 
-```{r}
-
-# Feldman et al. (2009): Emotional Processing 
-emotionalprocessing1 <- esc_mean_sd(grp1m = 3.10, grp1sd = 0.83, grp1n = 10, grp2m = 2.17, grp2sd = .64,
-                  grp2n = 9, es.type = "d", study = "Harley et al 2008")
-
-
-```
-
-# Effect size of Self-Esteem  
-```{r}
-
-# Safer et al. (2010): Rosenberg Self-Esteem Scale
-selfesteem1 <- esc_mean_sd(grp1m = 30.29, grp1sd = 6.89, grp1n = 43, grp2m = 29.82, grp2sd = 5.80,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
-
-# Safer et al. (2001): Rosenberg Self-Esteem Scale
-selfesteem2 <- esc_mean_sd(grp1m = 26.4, grp1sd = 5, grp1n = 14, grp2m = 25.4, grp2sd = 6.4,
-                  grp2n = 15, es.type = "d", study = "Safer et al 2001")
-
-# Telch et al. (2001): Rosenberg Self-Esteem Scale
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-selfesteem3 <- esc_mean_sd(grp1m = 29.4, grp1sd = 6.1, grp1n = 18, grp2m = 29.2, grp2sd = 4.5,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-```
-
-# Effect size of Mood / Affect 
-```{r}
-
-# Hirvikoski et al. (2011): Perceived Stress Scale
-stress1 <- esc_mean_sd(grp1m = 25.23, grp1sd = 9.39, grp1n = 26, grp2m = 26, grp2sd = 7.74,
-                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
-
-# Safer et al. (2010): Negative Mood Regulation Scale 
-stress2 <- esc_mean_sd(grp1m = 1.83, grp1sd = 0.98, grp1n = 43, grp2m = 2.06, grp2sd = 1.05,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
-
-# Safer et al. (2010): Disorders of Emotion Regulation Scale
-stress3 <- esc_mean_sd(grp1m = 75.58, grp1sd = 23.91, grp1n = 43, grp2m = 75.94, grp2sd = 21.04,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
-
-# Safer et al. (2010): Positive and Negative Affect Scale-Positive - positive affect 
-stress4 <- esc_mean_sd(grp1m = 30.24, grp1sd = 10.34, grp1n = 43, grp2m = 30.41, grp2sd = 6.97,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
-
-# Safer et al. (2010): Positive and Negative Affect Scale-Positive - negative affect 
-stress4 <- esc_mean_sd(grp1m = 21.26, grp1sd = 8.01, grp1n = 43, grp2m = 20.45, grp2sd = 6.58,
-                  grp2n = 43, es.type = "d", study = "Safer et al 2010")
-
-# Safer et al. (2001): Negative Mood Regulation Scale score 
-stress5 <- esc_mean_sd(grp1m = 96.1, grp1sd = 24, grp1n = 14, grp2m = 97.7, grp2sd = 15,
-                  grp2n = 15, es.type = "d", study = "Safer et al 2001")
-
-# Safer et al. (2001): Positive and Negative Affect Scale-Positive - positive affect
-stress6 <- esc_mean_sd(grp1m = 27.6, grp1sd = 8.2, grp1n = 14, grp2m = 28.3, grp2sd = 7.9,
-                  grp2n = 15, es.type = "d", study = "Safer et al 2001")
-
-# Safer et al. (2001): Positive and Negative Affect Scale-Positive - negative affect
-stress7 <- esc_mean_sd(grp1m = 23.4, grp1sd = 8.4, grp1n = 14, grp2m = 30.0, grp2sd = 9.7,
-                  grp2n = 15, es.type = "d", study = "Safer et al 2001")
-
-# Telch et al. (2001): Negative Mood Regulation Scale score 
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-stress8 <- esc_mean_sd(grp1m = 110.1, grp1sd = 16.8, grp1n = 18, grp2m = 104.1, grp2sd = 17,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Positive and Negative Affect Scale-Positive - positive affect 
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-stress9 <- esc_mean_sd(grp1m = 30, grp1sd = 10.8, grp1n = 18, grp2m = 31.2, grp2sd = 7.8,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-# Telch et al. (2001): Positive and Negative Affect Scale-Positive - negative affect 
-# Assumed N1 (22 - 4 = 18), N2 (22 - 6 = 16)
-stress10 <- esc_mean_sd(grp1m = 17.9, grp1sd = 6.7, grp1n = 18, grp2m = 20.6, grp2sd = 8.7,
-                  grp2n = 16, es.type = "d", study = "Telch et al 2001")
-
-
-
-```
-
-# Effect size of Sleep 
-```{r}
-
-# Hirvikoski et al. (2011): Karolinska Sleep Questionnaire - sleep 
-sleep1 <- esc_mean_sd(grp1m = 31.88, grp1sd = 15.24, grp1n = 26, grp2m = 28.88, grp2sd = 14.23,
-                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
-
-
-```
-
-# Effect size of Suicidiality  
-```{r}
-
-
-
-
-```
-
-# Effect size of Disability  
-```{r}
-
-# Hirvikoski et al. (2011): Sheehan Disability Scale - disability 
-disability1 <- esc_mean_sd(grp1m = 6.23, grp1sd = 1.99, grp1n = 26, grp2m = 6, grp2sd = 2.40,
-                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
-
-
-```
-
-# Effect size of Social Adjustment  
-```{r}
-
-# Harley et al. (2008): Social Adjustment Scale Self-Report Work Subscale
-socialadjustment1 <- esc_mean_sd(grp1m = 65.70, grp1sd = 19.27, grp1n = 10, grp2m = 69.56, grp2sd = 17.66,
-                  grp2n = 9, es.type = "d", study = "Harley et al 2008")
-
-# Harley et al. (2008): Social Adjustment Scale Self-Report Social or Leisure Subscale
-socialadjustment2 <- esc_mean_sd(grp1m = 64.30, grp1sd = 12.91, grp1n = 10, grp2m = 72.56, grp2sd = 16.21,
-                  grp2n = 9, es.type = "d", study = "Harley et al 2008")
-
-# Harley et al. (2008): Schwartz Outcome Scale 10 - measure satisfaction of mental health outcomes
-socialadjustment3 <- esc_mean_sd(grp1m = 35.30, grp1sd = 13.12, grp1n = 10, grp2m = 21.56, grp2sd = 11.09,
-                  grp2n = 9, es.type = "d", study = "Harley et al 2008")
-
+# Need to report particular outcomes: anxiety, depression, etc
 
 
 
@@ -433,207 +75,33 @@ socialadjustment3 <- esc_mean_sd(grp1m = 35.30, grp1sd = 13.12, grp1n = 10, grp2
 
 ```
 
-# Effect size of Impaired Functioning 
+# Boxplot to seperate outcomes across studies 
 ```{r}
-
-# Harley et al. (2008): Range of Impaired Functioning Tool Work Score
-impairedfunctioning1 <- esc_mean_sd(grp1m = 2.70, grp1sd = 1.34, grp1n = 10, grp2m = 3.11, grp2sd = 1.69,
-                  grp2n = 9, es.type = "d", study = "Harley et al 2008")
-
-# Harley et al. (2008): Range of Impaired Functioning Tool Recreation Score
-impairedfunctioning2 <- esc_mean_sd(grp1m = 2.70, grp1sd = 1.06, grp1n = 10, grp2m = 3, grp2sd = 1.19,
-                  grp2n = 9, es.type = "d", study = "Harley et al 2008")
-
-# Harley et al. (2008): Range of Impaired Functioning Tool Satisfaction Score
-impairedfunctioning3 <- esc_mean_sd(grp1m = 2.70, grp1sd = 0.95, grp1n = 10, grp2m = 3.33, grp2sd = 1.19,
-                  grp2n = 9, es.type = "d", study = "Harley et al 2008")
-
-
+boxplot(yi ~ outcome, data = dbtst)
 
 
 ```
 
-# Effect size of Borderline Personality Disorder Core Symptoms
+# Funnel Plot
 ```{r}
-# Soler et al. (2009):  Clinical Global Impression-Borderline Personality Disorder - global
-# Assumed N1, N2
-bpd1 <- esc_mean_sd(grp1m = 3.50, grp1sd = 1.20, grp1n = 23, grp2m = 4.44, grp2sd = 0.52,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Clinical Global Impression-Borderline Personality Disorder - unstable relations
-# Assumed N1, N2
-bpd2 <- esc_mean_sd(grp1m = 4.22, grp1sd = 0.80, grp1n = 23, grp2m = 4.44, grp2sd = 0.72,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Clinical Global Impression-Borderline Personality Disorder - impulsivity
-# Assumed N1, N2
-bpd3 <- esc_mean_sd(grp1m = 3.61, grp1sd = 0.97, grp1n = 23, grp2m = 4.11, grp2sd = 0.60,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Clinical Global Impression-Borderline Personality Disorder - suicide
-# Assumed N1, N2
-bpd4 <- esc_mean_sd(grp1m = 2.44, grp1sd = 1.24, grp1n = 23, grp2m = 2.55, grp2sd = 0.88,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Clinical Global Impression-Borderline Personality Disorder - affect instability
-# Assumed N1, N2
-bpd5 <- esc_mean_sd(grp1m = 3.61, grp1sd = 1.19, grp1n = 23, grp2m = 4.66, grp2sd = 0.70,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
+# A common way to investigate potential publication bias in a meta-analysis is the funnel plot, asymmetrical distribution indicates potential publication bias
 
 
-# Soler et al. (2009):  Clinical Global Impression-Borderline Personality Disorder - anger
-# Assumed N1, N2
-bpd6 <- esc_mean_sd(grp1m = 3.11, grp1sd = 1.02, grp1n = 23, grp2m = 3.88, grp2sd = 0.78,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Clinical Global Impression-Borderline Personality Disorder - emptiness
-# Assumed N1, N2
-bpd7 <- esc_mean_sd(grp1m = 4.33, grp1sd = 1.57, grp1n = 23, grp2m = 5, grp2sd = 1.50,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Clinical Global Impression-Borderline Personality Disorder - Global Improv Patient
-# Assumed N1, N2
-bpd8 <- esc_mean_sd(grp1m = 3.27, grp1sd = 0.90, grp1n = 23, grp2m = 3.57, grp2sd = 1.13,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-bpd <- combine_esc(bpd1, bpd2, bpd3, bpd4, bpd5, bpd6, bpd7)
-
-metafor::rma(yi = es, sei = se, method = "REML", data = bpd)
-
-#  d =  -0.6244 (medium) 
-
-# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
-``` 
-
-# Effect size of Hostility (Irritability)
-```{r}
-# Soler et al. (2009):  Buss–Durkee Inventory - irritability
-# Assumed N1, N2
-h1 <- esc_mean_sd(grp1m = 8.38, grp1sd = 3.34, grp1n = 23, grp2m = 9.86, grp2sd = 0.90,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-# Soler et al. (2009):  Buss–Durkee Inventory - indirect hostility
-# Assumed N1, N2
-h2 <- esc_mean_sd(grp1m = 6.75, grp1sd = 1.88, grp1n = 23, grp2m = 7.57, grp2sd = 1.27,
-                  grp2n = 26, es.type = "d", study = "Soler et al 2009")
-
-hostility <- combine_esc(h1, h2)
-
-metafor::rma(yi = es, sei = se, method = "REML", data = hostility)
-
-#  d =  -0.5695 (medium) 
-
-# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
-```
-
-# Effect size of Coping
-```{r}
-
-# Shelton et al. (2009): Ways of Coping Checklist - planful problem solving 
-c1 <- esc_f(f = 5.2, grp1n = 63, grp2n = 61, study = "Shelton et al 2010")
-
-# Shelton et al. (2009): Ways of Coping Checklist - escape-avoidance
-c2 <- esc_f(f = 4.51, grp1n = 63, grp2n = 61, study = "Shelton et al 2010")
-
-
-
-coping <- combine_esc(c1, c2)
-
-metafor::rma(yi = es, sei = se, method = "REML", data = coping)
-
-#  d = 0.3955 (medium) 
-
-# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
-```
-
-# Effect size of Intelligence 
-```{r}
-
-# Hirvikoski et al. (2011): Full Scale IQ - intelligence 
-s1 <- esc_mean_sd(grp1m = 99.92, grp1sd = 12.58, grp1n = 26, grp2m = 99.87, grp2sd = 12.85,
-                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
-
-
-```
-
-# Effect size of ADHD 
-```{r}
-
-# Hirvikoski et al. (2011): Wender Utah Rating Scale - childhood ADHD 
-adhd1 <- esc_mean_sd(grp1m = 31.88, grp1sd = 15.24, grp1n = 26, grp2m = 28.88, grp2sd = 14.23,
-                  grp2n = 25, es.type = "d", study = "Hirvikoski et al 2011")
-
-
-
-```
-
-# Effect size of Disciplinary Tickets
-```{r}
-# Shelton et al. (2009): disciplinary tickets
-dt1 <- esc_t(t = 2.292, grp1n = 63, grp2n = 61, study = "Shelton et al 2010")
-
-disctickets <- combine_esc(dt1)
+### decrease margins so the full space is used
+par(mar=c(5,4,1,2))
  
-metafor::rma(yi = es, sei = se, method = "REML", data = disctickets)
-
-#  d = 0.4117 (medium) 
-
-# Small effect = 0.2, Medium Effect = 0.5, Large Effect = 0.8
-
-```
-
-
-# Combine all Two Group Effect Sizes into CSV spreadsheet on Excel
-```{r}
-
-# This method is a small wrapper to write csv-files. It writes the results from combine_esc into an Excel csv-file.
-write_esc(a1, a2, a3, d1, psychiatric1, psychiatric2, psychiatric3, psychiatric4, psychotic1, bpd1, bpd2, bpd3, bpd4, bpd5, bpd6, bpd7, h1, h2, c1, c2, dt1,  path = "EffSizes2Group")
-
-```
-
-
-
-
-###### One group Pre and Post (No Control) ####################################
-
-# Effect size of coping 
-```{r}
-# Results: To test the hypothesis that participants will show reduced aggression, impulsivity, and improved coping, after completing the DBT-CM groups: physical aggression as measured by BPAQ (t= 7.576, df=21, p=.000) and using distancing (WCCL subscale) as a coping strategy (t=2.529, df=9, p=.032) showed statistical differences at post-test. There was a significant change in disciplinary tickets from pre to posttest (t=2.753, df =24, p =.011), indicating that correctional officers observed an improvement in aggressive and impulsive behavior following the intervention.
-
-
-# Shelton et al. (2011): WCCL - coping strategy
-# N = 26, df = 9, p = .032
-esc_t(t = 2.529, grp1n = , grp2n = ) #???paired t-test for one group, no control, pre-post measures
-
-```
-
-
-
-
-# Effect size of Physical Aggression 
-```{r}
-# Results: To test the hypothesis that participants will show reduced aggression, impulsivity, and improved coping, after completing the DBT-CM groups: physical aggression as measured by BPAQ (t= 7.576, df=21, p=.000) and using distancing (WCCL subscale) as a coping strategy (t=2.529, df=9, p=.032) showed statistical differences at post-test. There was a significant change in disciplinary tickets from pre to posttest (t=2.753, df =24, p =.011), indicating that correctional officers observed an improvement in aggressive and impulsive behavior following the intervention.
-
-# Shelton et al. (2011): BPAQ - physical aggression
-# N = 26, df = 21, p = .000
-esc_t(t = 7.576, grp1n = , grp2n = ) #???paired t-test for one group, no control, pre-post measures
-
+### fit random-effects model
+res <- rma(yi, vi, data=dbtst, measure="SMD")
+ 
+### carry out trim-and-fill analysis
+taf <- trimfill(res)
+ 
+### draw funnel plot with missing studies filled in
+funnel(taf)
 
 
 ```
 
-
-
-
-# Effect size of Disciplinary Tickets 
-```{r}
-# Results: To test the hypothesis that participants will show reduced aggression, impulsivity, and improved coping, after completing the DBT-CM groups: physical aggression as measured by BPAQ (t= 7.576, df=21, p=.000) and using distancing (WCCL subscale) as a coping strategy (t=2.529, df=9, p=.032) showed statistical differences at post-test. There was a significant change in disciplinary tickets from pre to posttest (t=2.753, df =24, p =.011), indicating that correctional officers observed an improvement in aggressive and impulsive behavior following the intervention.
-
-# Shelton et al. (2011): disciplinary tickets
-# N = 26, df = 24, p = .011
-esc_t(t = 2.753, grp1n = , grp2n = ) #???paired t-test for one group, no control, pre-post measures
-
-```
 
 
 

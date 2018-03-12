@@ -1,0 +1,174 @@
+---
+title: "dbtstmetaanalysis"
+author: "Jonathan"
+date: "January 15, 2018"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Load Packages
+```{r}
+#install.packages("metafor")
+library("metafor")
+
+
+#install.packages('ggplot2')
+library("ggplot2")
+
+#install.packages("readxl")
+library("readxl")
+
+```
+
+# Load in data from excel
+```{r}
+
+dbtst <- read_excel("larson(rmetaanalysis).xlsx")
+View(rstudiometaanalysis)
+
+
+
+```
+
+# Calculate standardised mean difference (SMD)
+```{r}
+# effect size based on the difference between groups
+
+SMD <- escalc(n1i = n_control, n2i = n_treatment, m1i = mean_control, m2i = mean_treatment, sd1i = sd_control, sd2i = sd_treatment, data = dbtst, measure = "SMD", append = TRUE)
+
+```
+
+
+# Calculate log mean ratios (lnRR)
+```{r}
+# log of the proportional difference between the groups
+
+ROM <- escalc(n1i = n_control, n2i = n_treatment, m1i = mean_control, m2i = mean_treatment, sd1i = sd_control, sd2i = sd_treatment, data = dbtst, measure = "SMD", append = TRUE)
+
+
+
+```
+
+# Compute meta-analysis
+```{r}
+# the variability and effects sizes of each set of comparisons are usedto calculate an overall mean effect size, with giving the most weight to the most precise studies
+
+SMD.ma <- rma.uni(yi, vi, method="REML", data=dbtst)
+summary(SMD.ma)
+
+
+```
+
+
+
+# Calculate the percentage difference between groups
+```{r}
+
+(exp(0.3687)-1)*100 # 44.58538
+
+(exp(0.0447 *1.96)-1)*100 # 9.156451
+
+
+#  DBT-ST is 45% more effective than control groups when looking at overall treatment outcomes, with a confidence interval of +/- 9%
+```
+
+
+# Forest Plot
+```{r}
+
+theme_set(theme_bw(base_size=10))
+
+dbtst_data <- rbind(data.frame(ES=ROM.ma$yi,SE=sqrt(ROM.ma$vi),Type="Study",Study=dbtst$study),data.frame(ES=ROM.ma$b,SE=ROM.ma$se,Type="Summary",Study="Summary"))
+
+dbtst_data
+
+################
+
+levels(dbtst_data$study)
+
+plot1<-ggplot(data=dbst_data,aes(x=study,y=ES,ymax=ES+(1.96*SE),ymin=ES-(1.96*SE),size=factor(Type),colour=factor(Type)))+geom_pointrange()
+
+plot2<-plot1+coord_flip()+geom_hline(aes(x=0), lty=2,size=1)+scale_size_manual(values=c(0.5,1))
+
+plot3<-plot2+xlab("Study")+ylab("log response ratio")+scale_colour_manual(values=c("grey","black"))
+
+plot3+theme(legend.position="none")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Calculate effect sizes 
+```{r}
+
+dbtst <- escalc(n1i = n_control, n2i = n_treatment, m1i = mean_control, m2i = mean_treatment, sd1i = sd_control, sd2i = sd_treatment, data = dbtst, measure = "SMD", append = TRUE)
+
+
+rma_model <- rma(yi, vi, data = dbtst)
+summary(rma_model)
+
+# Need to report particular outcomes: anxiety, depression, etc
+
+
+
+
+```
+
+# Forest-Plot of All Outcomes
+```{r}
+forest(rma_model, slab = paste(dbtst$study, as.character(dbtst$year), sep = ", "))
+
+# To visualize all effect sizes
+# Need to report particular outcomes: anxiety, depression, etc
+
+
+```
+
+# Boxplot to seperate outcomes across studies 
+```{r}
+boxplot(yi ~ outcome, data = dbtst)
+
+# To visualize different outcomes
+# Need to report particular outcomes: anxiety, depression, etc
+```
+
+# Funnel Plot
+```{r}
+funnel(rma_model)
+
+# A common way to investigate potential publication bias in a meta-analysis is the funnel plot. Asymmetrical distribution indicates potential publication bias.
+
+```
+
+
+
+
+
+```{r}
+
+
+```
+
+
+
+
+
+
+
+# 

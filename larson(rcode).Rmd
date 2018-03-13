@@ -20,6 +20,8 @@ library("MAd")
 library("readxl")
 
 ```
+##### THE FOLLOWING SCRIPT DOES NOT SEPARATE OUTCOMES, BUT LOOKS AT ALL OUTCOMES TOGETHER (MUST CONSIDER HOW TO DO THIS) #####
+
 
 # Load data
 ```{r}
@@ -37,7 +39,8 @@ View(dbtst_es)
 
 # Calculate effect sizes 
 ```{r}
-# The following random-effects meta analysis will follow steps provided from A. C. Del Re's article: "A Practicial Tutorial on Conducting Meta-Analysis in R" to compute Hedge's g effect sizes of Dialetical Behavior Therapy Skills Trainning outcomes. However, unlike A. C. Rel Re's tutorial, moderators were not incorported into the analysis.
+# The following random-effects meta analysis will follow steps provided from A. C. Del Re's (2015) article: "A Practicial Tutorial on Conducting Meta-Analysis in R" to compute Hedge's g effect sizes of Dialetical Behavior Therapy Skills Trainning outcomes. However, unlike A. C. Rel Re's tutorial, moderators were not incorported into the analysis
+# Citation: Del Re, A. C. (2015). A practical tutorial on conducting meta-analysis in R. The Quantitative Methods for Psychology, 11(1), 37-50.
 
 
 res1 <- mes(m.1 = m1T, m.2 = m1C, sd.1 = sd1T, sd.2 = sd1C, n.1 = nT, n.2 = nC, id = id, data = dbtst_raw)
@@ -49,9 +52,9 @@ res1
 ```
 
 
-# Aggregating dependent effect sizes
+# Aggregate dependent effect sizes
 ```{r}
-# Given that studies may report multiple outcome measures, aggregating them prior to analysis is necessary so that each independent sample (study) contributes only a single ES
+# When studies report multiple outcome measures, aggregating them prior to analysis is necessary so to ensure each independent study contributes only a single effect size
 
 
 dbtst_agg <- agg(id = id, es = g, var = var.g, n.1 = nT, n.2 = nC, cor = 0.5, method = "BHHR", data = dbtst_es)
@@ -60,44 +63,43 @@ dbtst_agg <- agg(id = id, es = g, var = var.g, n.1 = nT, n.2 = nC, cor = 0.5, me
 dbtst_agg
 ```
 
-# Estimating summary effect
 
-
-# Forest-Plot of All Outcomes
+# Estimate summary effect by random-effects omnibus test
 ```{r}
-forest(rma_model, slab = paste(dbtst$study, as.character(dbtst$year), sep = ", "))
+# A summary effect is a weighted average of the individual study effect size, where each study is weighted by the inverse of the variance (larger studies with bigger samples are weighted heavier in the omnibus test)
 
-# Need to report particular outcomes: anxiety, depression, etc
+# Random-effect omnibus test
+m0 <- mareg(es ~ 1, var = var, method = "REML",data = dbtst_agg)
+
+# View summary effect
+summary(m0)
 
 
+# Positive or negative effect size depends on which sample means were labeled 1 and 2. If M1 is bigger than M2, the effect size will be positive. If the second mean is larger, the effect size will be negative. If M1 is the experimental group, and M2 is the control group, then a negative effect size indicates the effect decreases the mean, and a positive effect size indicates that the effect increases the mean.
+```
 
+# Forest plot of all outcomes
+```{r}
+# The effect sizes and heterogeneity estimates can be seen visually with a forest plot
 
+forest(m0)
 
 ```
 
-# Boxplot to seperate outcomes across studies 
+# Evaluate heterogeneity of summary effect
 ```{r}
-boxplot(yi ~ outcome, data = dbtst)
+# Heterogeneity is the measure of variability of effect sizes between different studies. A considerable amount of variability is indicative of a lack in precision of the true summary effect size. 
 
+confint(m0, digits=2)
 
 ```
 
-# Funnel Plot
+# Funnel plot of all outcomes
 ```{r}
 # A common way to investigate potential publication bias in a meta-analysis is the funnel plot, asymmetrical distribution indicates potential publication bias
 
+funnel(m0)
 
-### decrease margins so the full space is used
-par(mar=c(5,4,1,2))
- 
-### fit random-effects model
-res <- rma(yi, vi, data=dbtst, measure="SMD")
- 
-### carry out trim-and-fill analysis
-taf <- trimfill(res)
- 
-### draw funnel plot with missing studies filled in
-funnel(taf)
 
 
 ```

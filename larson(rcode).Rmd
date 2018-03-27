@@ -26,6 +26,7 @@ library("readxl")
 
 ##### Overall (All Outcomes) #####
 
+
 # Load overall data
 ```{r}
 # study id, author, year, outcome, test, treatment mean, treatment standard deviation, treatment n, control mean, control standard deviation, control n
@@ -43,7 +44,7 @@ View(dbtst_overall_es)
 # Calculate effect sizes of overall data
 ```{r}
 
-res1 <- mes(m.1 = m1T, m.2 = m1C, sd.1 = sd1T, sd.2 = sd1C, n.1 = nT, n.2 = nC, id = id, data = dbtst_raw)
+res1 <- mes(m.1 = m1T, m.2 = m1C, sd.1 = sd1T, sd.2 = sd1C, n.1 = nT, n.2 = nC, id = id, data = dbtst_overall_raw)
 
 # View data
 res1
@@ -57,7 +58,7 @@ res1
 # When studies report multiple outcome measures, aggregating them prior to analysis is necessary so to ensure each independent study contributes only a single effect size
 
 
-dbtst_agg <- agg(id = id, es = g, var = var.g, n.1 = nT, n.2 = nC, cor = 0.5, method = "BHHR", data = dbtst_es)
+dbtst_agg <- agg(id = id, es = g, var = var.g, n.1 = nT, n.2 = nC, cor = 0.5, method = "BHHR", data = dbtst_overall_es)
 
 # View aggregated data
 dbtst_agg
@@ -111,76 +112,76 @@ funnel(m0)
 # Load eating data
 ```{r}
 # study id, author, year, outcome, test, treatment mean, treatment standard deviation, treatment n, control mean, control standard deviation, control n
-dbtst_overall_raw <- read_excel("larson(overall_raw_ma).xlsx")
-View(dbtst_overall_raw)
+dbtst_eating_raw <- read_excel("larson(eating_raw_ma).xlsx")
+View(dbtst_eating_raw)
 
 # study id, author, year, outcome, test, treatment n, control n, hedge's g, variance of hedge's g, p-value of hedge's g
-dbtst_overall_es <- read_excel("larson(overall_es_ma).xlsx")
-View(dbtst_overall_es)
+dbtst_eating_es <- read_excel("larson(eating_es_ma).xlsx")
+View(dbtst_eating_es)
 
 
 ```
 
 
-# Calculate effect sizes of overall data
+# Calculate effect sizes of eating data
 ```{r}
 
-res1 <- mes(m.1 = m1T, m.2 = m1C, sd.1 = sd1T, sd.2 = sd1C, n.1 = nT, n.2 = nC, id = id, data = dbtst_raw)
+res2 <- mes(m.1 = m1T, m.2 = m1C, sd.1 = sd1T, sd.2 = sd1C, n.1 = nT, n.2 = nC, id = id, data = dbtst_eating_raw)
 
 # View data
-res1
+res2
 
 
 ```
 
 
-# Aggregate dependent effect sizes of overall data
+# Aggregate dependent effect sizes of eating data
 ```{r}
 # When studies report multiple outcome measures, aggregating them prior to analysis is necessary so to ensure each independent study contributes only a single effect size
 
 
-dbtst_agg <- agg(id = id, es = g, var = var.g, n.1 = nT, n.2 = nC, cor = 0.5, method = "BHHR", data = dbtst_es)
+dbtst_eating_agg <- agg(id = id, es = g, var = var.g, n.1 = nT, n.2 = nC, cor = 0.5, method = "BHHR", data = dbtst_eating_es)
 
 # View aggregated data
-dbtst_agg
+dbtst_eating_agg
 ```
 
 
-# Estimate summary effect by random-effects omnibus test of overall data
+# Estimate summary effect by random-effects omnibus test of eating data
 ```{r}
 # A summary effect is a weighted average of the individual study effect size, where each study is weighted by the inverse of the variance (larger studies with bigger samples are weighted heavier in the omnibus test)
 
 # Random-effect omnibus test
-m0 <- mareg(es ~ 1, var = var, method = "REML",data = dbtst_agg)
+m1 <- mareg(es ~ 1, var = var, method = "REML",data = dbtst_eating_agg)
 
 # View summary effect
-summary(m0)
+summary(m1)
 
 
 # Positive or negative effect size depends on which sample means were labeled 1 and 2. If M1 is bigger than M2, the effect size will be positive. If the second mean is larger, the effect size will be negative. If M1 is the experimental group, and M2 is the control group, then a negative effect size indicates the effect decreases the mean, and a positive effect size indicates that the effect increases the mean.
 ```
 
-# Forest plot of all outcomes of overall data
+# Forest plot of all outcomes of eating data
 ```{r}
 # The effect sizes and heterogeneity estimates can be seen visually with a forest plot
 
-forest(m0)
+forest(m1)
 
 ```
 
-# Evaluate heterogeneity of summary effect of overall data
+# Evaluate heterogeneity of summary effect of eating data
 ```{r}
 # Heterogeneity is the measure of variability of effect sizes between different studies. A considerable amount of variability is indicative of a lack in precision of the true summary effect size. 
 
-confint(m0, digits=2)
+confint(m1, digits=2)
 
 ```
 
-# Funnel plot of all outcomes of overall data
+# Funnel plot of all outcomes of eating data
 ```{r}
 # A common way to investigate potential publication bias in a meta-analysis is the funnel plot, asymmetrical distribution indicates potential publication bias
 
-funnel(m0)
+funnel(m1)
 
 
 

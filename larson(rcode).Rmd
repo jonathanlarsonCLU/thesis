@@ -4,7 +4,7 @@ author: "Jonathan"
 date: "January 15, 2018"
 output: pdf_document
 ---
-# The following random-effects meta analysis will follow steps provided from A. C. Del Re's (2015) article: "A Practicial Tutorial on Conducting Meta-Analysis in R" to compute Hedge's g effect sizes of Dialetical Behavior Therapy Skills Trainning outcomes. However, unlike A. C. Rel Re's tutorial, moderators were not incorported into the analysis
+# The following random-effects meta analysis will follow steps provided from A. C. Del Re's (2015) article: "A Practicial Tutorial on Conducting Meta-Analysis in R" to compute Hedge's g effect sizes of Dialetical Behavior Therapy Skills Trainning outcomes. However, unlike A. C. Rel Re's tutorial, moderators were not used in the analysis
 
 # Citation: Del Re, A. C. (2015). A practical tutorial on conducting meta-analysis in R. The Quantitative Methods for Psychology, 11(1), 37-50.
 
@@ -24,90 +24,9 @@ library("readxl")
 
 ```
 
-##### Overall (All Outcomes) #####
+# Eating Outcomes
 
 
-# Load overall data
-```{r}
-# study id, author, year, outcome, test, treatment mean, treatment standard deviation, treatment n, control mean, control standard deviation, control n
-dbtst_overall_raw <- read_excel("larson(overall_raw_ma).xlsx")
-View(dbtst_overall_raw)
-
-# study id, author, year, outcome, test, treatment n, control n, hedge's g, variance of hedge's g, p-value of hedge's g
-dbtst_overall_es <- read_excel("larson(overall_es_ma).xlsx")
-View(dbtst_overall_es)
-
-
-```
-
-
-# Calculate effect sizes of overall data
-```{r}
-
-res1 <- mes(m.1 = m1T, m.2 = m1C, sd.1 = sd1T, sd.2 = sd1C, n.1 = nT, n.2 = nC, id = id, data = dbtst_overall_raw)
-
-# View data
-res1
-
-
-```
-
-
-# Aggregate dependent effect sizes of overall data
-```{r}
-# When studies report multiple outcome measures, aggregating them prior to analysis is necessary so to ensure each independent study contributes only a single effect size
-
-
-dbtst_agg <- agg(id = id, es = g, var = var.g, n.1 = nT, n.2 = nC, cor = 0.5, method = "BHHR", data = dbtst_overall_es)
-
-# View aggregated data
-dbtst_agg
-```
-
-
-# Estimate summary effect by random-effects omnibus test of overall data
-```{r}
-# A summary effect is a weighted average of the individual study effect size, where each study is weighted by the inverse of the variance (larger studies with bigger samples are weighted heavier in the omnibus test)
-
-# Random-effect omnibus test
-m0 <- mareg(es ~ 1, var = var, method = "REML",data = dbtst_agg)
-
-# View summary effect
-summary(m0)
-
-
-# Positive or negative effect size depends on which sample means were labeled 1 and 2. If M1 is bigger than M2, the effect size will be positive. If the second mean is larger, the effect size will be negative. If M1 is the experimental group, and M2 is the control group, then a negative effect size indicates the effect decreases the mean, and a positive effect size indicates that the effect increases the mean.
-```
-
-# Forest plot of all outcomes of overall data
-```{r}
-# The effect sizes and heterogeneity estimates can be seen visually with a forest plot
-
-forest(m0)
-
-```
-
-# Evaluate heterogeneity of summary effect of overall data
-```{r}
-# Heterogeneity is the measure of variability of effect sizes between different studies. A considerable amount of variability is indicative of a lack in precision of the true summary effect size. 
-
-confint(m0, digits=2)
-
-```
-
-# Funnel plot of all outcomes of overall data
-```{r}
-# A common way to investigate potential publication bias in a meta-analysis is the funnel plot, asymmetrical distribution indicates potential publication bias
-
-funnel(m0)
-
-
-
-```
-
-##### Separated By Outcomes #####
-
-### Eating ### 
 
 # Load eating data
 ```{r}
@@ -166,6 +85,8 @@ summary(m1)
 # The effect sizes and heterogeneity estimates can be seen visually with a forest plot
 
 forest(m1)
+title(main="Eating Outcomes", ylab="Study")
+
 
 ```
 

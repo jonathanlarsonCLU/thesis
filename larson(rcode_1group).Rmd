@@ -1,0 +1,307 @@
+---
+title: "dbtstma1group"
+author: "Jonathan"
+date: "January 15, 2018"
+output: pdf_document
+---
+# The following random-effects meta analysis will follow steps provided from A. C. Del Re's (2015) article: "A Practicial Tutorial on Conducting Meta-Analysis in R" to compute Hedge's g effect sizes of Dialetical Behavior Therapy Skills Trainning outcomes. However, unlike A. C. Rel Re's tutorial, moderators were not used in the analysis
+
+# Citation: Del Re, A. C. (2015). A practical tutorial on conducting meta-analysis in R. The Quantitative Methods for Psychology, 11(1), 37-50.
+
+
+# When pre-post correlation is not given in the study, sensitivity measures of the following correlations will be used: 0,  0.5. and 0.9.  If the computed effect size outcomes are the same among the three correlations (0, 0.5, 0.9), then it may be appropriate to use this method.  
+
+# Blog reference: https://www.researchgate.net/post/Comprehensive_Meta_Analysis_pre-post_correlation_using_M_SD_N_pre-post_data
+
+# Load packages
+```{r}
+#install.packages("metafor")
+library("metafor")
+
+#install.packages("compute.es")
+library("compute.es")
+
+#install.packages("MAd")
+library("MAd")
+
+#install.packages("readxl")
+library("readxl")
+
+```
+
+# 
+```{r}
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Eating Outcomes
+
+
+
+# Load eating data
+```{r}
+# study id, author, year, outcome, test, treatment mean, treatment standard deviation, treatment n, control mean, control standard deviation, control n
+dbtst_eating_raw <- read_excel("larson(eating_raw_ma).xlsx")
+View(dbtst_eating_raw)
+
+# study id, author, year, outcome, test, treatment n, control n, hedge's g, variance of hedge's g, p-value of hedge's g
+dbtst_eating_es <- read_excel("larson(eating_es_ma).xlsx")
+View(dbtst_eating_es)
+
+
+```
+
+
+# Calculate effect sizes of eating data
+```{r}
+
+res2 <- mes(m.1 = m1T, m.2 = m1C, sd.1 = sd1T, sd.2 = sd1C, n.1 = nT, n.2 = nC, id = id, data = dbtst_eating_raw)
+
+# View data
+res2
+
+
+```
+
+
+# Aggregate dependent effect sizes of eating data
+```{r}
+# When studies report multiple outcome measures, aggregating them prior to analysis is necessary so to ensure each independent study contributes only a single effect size
+
+
+dbtst_eating_agg <- agg(id = id, es = g, var = var.g, n.1 = nT, n.2 = nC, cor = 0.5, method = "BHHR", data = dbtst_eating_es)
+
+# View aggregated data
+dbtst_eating_agg
+```
+
+
+# Estimate summary effect by random-effects omnibus test of eating data
+```{r}
+# A summary effect is a weighted average of the individual study effect size, where each study is weighted by the inverse of the variance (larger studies with bigger samples are weighted heavier in the omnibus test)
+
+# Random-effect omnibus test
+m1 <- mareg(es ~ 1, var = var, method = "REML",data = dbtst_eating_agg)
+
+# View summary effect
+summary(m1)
+
+
+# Positive or negative effect size depends on which sample means were labeled 1 and 2. If M1 is bigger than M2, the effect size will be positive. If the second mean is larger, the effect size will be negative. If M1 is the experimental group, and M2 is the control group, then a negative effect size indicates the effect decreases the mean, and a positive effect size indicates that the effect increases the mean.
+```
+
+# Forest plot of all outcomes of eating data
+```{r}
+# The effect sizes and heterogeneity estimates can be seen visually with a forest plot
+
+forest(m1)
+title(main="Eating Outcomes", ylab="Study")
+
+
+```
+
+# Evaluate heterogeneity of summary effect of eating data
+```{r}
+# Heterogeneity is the measure of variability of effect sizes between different studies. A considerable amount of variability is indicative of a lack in precision of the true summary effect size. 
+
+confint(m1, digits=2)
+
+```
+
+# Funnel plot of all outcomes of eating data
+```{r}
+# A common way to investigate potential publication bias in a meta-analysis is the funnel plot, asymmetrical distribution indicates potential publication bias
+
+funnel(m1)
+
+
+
+```
+
+
+# Depression Outcomes
+
+
+
+# Load depression data
+```{r}
+# study id, author, year, outcome, test, treatment mean, treatment standard deviation, treatment n, control mean, control standard deviation, control n
+dbtst_depression_raw <- read_excel("larson(depression_raw_ma).xlsx")
+View(dbtst_depression_raw)
+
+# study id, author, year, outcome, test, treatment n, control n, hedge's g, variance of hedge's g, p-value of hedge's g
+dbtst_depression_es <- read_excel("larson(depression_es_ma).xlsx")
+View(dbtst_depression_es)
+
+
+```
+
+
+# Calculate effect sizes of depression data
+```{r}
+
+res3 <- mes(m.1 = m1T, m.2 = m1C, sd.1 = sd1T, sd.2 = sd1C, n.1 = nT, n.2 = nC, id = id, data = dbtst_depression_raw)
+
+# View data
+res3
+
+
+```
+
+
+# Aggregate dependent effect sizes of depression data
+```{r}
+# When studies report multiple outcome measures, aggregating them prior to analysis is necessary so to ensure each independent study contributes only a single effect size
+
+
+dbtst_depression_agg <- agg(id = id, es = g, var = var.g, n.1 = nT, n.2 = nC, cor = 0.5, method = "BHHR", data = dbtst_depression_es)
+
+# View aggregated data
+dbtst_depression_agg
+```
+
+
+# Estimate summary effect by random-effects omnibus test of depression data
+```{r}
+# A summary effect is a weighted average of the individual study effect size, where each study is weighted by the inverse of the variance (larger studies with bigger samples are weighted heavier in the omnibus test)
+
+# Random-effect omnibus test
+m2 <- mareg(es ~ 1, var = var, method = "REML",data = dbtst_depression_agg)
+
+# View summary effect
+summary(m2)
+
+
+# Positive or negative effect size depends on which sample means were labeled 1 and 2. If M1 is bigger than M2, the effect size will be positive. If the second mean is larger, the effect size will be negative. If M1 is the experimental group, and M2 is the control group, then a negative effect size indicates the effect decreases the mean, and a positive effect size indicates that the effect increases the mean.
+```
+
+# Forest plot of all outcomes of depression data
+```{r}
+# The effect sizes and heterogeneity estimates can be seen visually with a forest plot
+
+forest(m2)
+title(main="Depression Outcomes", ylab="Study")
+
+
+```
+
+# Evaluate heterogeneity of summary effect of depression data
+```{r}
+# Heterogeneity is the measure of variability of effect sizes between different studies. A considerable amount of variability is indicative of a lack in precision of the true summary effect size. 
+
+confint(m2, digits=2)
+
+```
+
+# Funnel plot of all outcomes of depression data
+```{r}
+# A common way to investigate potential publication bias in a meta-analysis is the funnel plot, asymmetrical distribution indicates potential publication bias
+
+funnel(m2)
+
+
+
+```
+
+# Anxiety Outcomes
+
+
+
+# Load anxiety data
+```{r}
+# study id, author, year, outcome, test, treatment mean, treatment standard deviation, treatment n, control mean, control standard deviation, control n
+dbtst_anxiety_raw <- read_excel("larson(anxiety_raw_ma).xlsx")
+View(dbtst_anxiety_raw)
+
+# study id, author, year, outcome, test, treatment n, control n, hedge's g, variance of hedge's g, p-value of hedge's g
+dbtst_anxiety_es <- read_excel("larson(anxiety_es_ma).xlsx")
+View(dbtst_anxiety_es)
+
+
+```
+
+
+# Calculate effect sizes of anxiety data
+```{r}
+
+res4 <- mes(m.1 = m1T, m.2 = m1C, sd.1 = sd1T, sd.2 = sd1C, n.1 = nT, n.2 = nC, id = id, data = dbtst_anxiety_raw)
+
+# View data
+res4
+
+
+```
+
+
+# Aggregate dependent effect sizes of anxiety data
+```{r}
+# When studies report multiple outcome measures, aggregating them prior to analysis is necessary so to ensure each independent study contributes only a single effect size
+
+
+dbtst_anxiety_agg <- agg(id = id, es = g, var = var.g, n.1 = nT, n.2 = nC, cor = 0.5, method = "BHHR", data = dbtst_anxiety_es)
+
+# View aggregated data
+dbtst_anxiety_agg
+```
+
+
+# Estimate summary effect by random-effects omnibus test of anxiety data
+```{r}
+# A summary effect is a weighted average of the individual study effect size, where each study is weighted by the inverse of the variance (larger studies with bigger samples are weighted heavier in the omnibus test)
+
+# Random-effect omnibus test
+m3 <- mareg(es ~ 1, var = var, method = "REML",data = dbtst_anxiety_agg)
+
+# View summary effect
+summary(m3)
+
+
+# Positive or negative effect size depends on which sample means were labeled 1 and 2. If M1 is bigger than M2, the effect size will be positive. If the second mean is larger, the effect size will be negative. If M1 is the experimental group, and M2 is the control group, then a negative effect size indicates the effect decreases the mean, and a positive effect size indicates that the effect increases the mean.
+```
+
+# Forest plot of all outcomes of anxiety data
+```{r}
+# The effect sizes and heterogeneity estimates can be seen visually with a forest plot
+
+forest(m3)
+title(main="Anxiety Outcomes", ylab="Study")
+
+
+```
+
+# Evaluate heterogeneity of summary effect of anxiety data
+```{r}
+# Heterogeneity is the measure of variability of effect sizes between different studies. A considerable amount of variability is indicative of a lack in precision of the true summary effect size. 
+
+confint(m3, digits=2)
+
+```
+
+# Funnel plot of all outcomes of anxiety data
+```{r}
+# A common way to investigate potential publication bias in a meta-analysis is the funnel plot, asymmetrical distribution indicates potential publication bias
+
+funnel(m3)
+
+
+
+```
+
+
+
+
+

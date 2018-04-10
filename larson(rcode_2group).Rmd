@@ -1,5 +1,5 @@
 ---
-title: "dbtstmetaanalysis"
+title: "dbtstma2group"
 author: "Jonathan"
 date: "January 15, 2018"
 output: pdf_document
@@ -281,5 +281,3 @@ funnel(m3)
 
 
 
-
-# 
